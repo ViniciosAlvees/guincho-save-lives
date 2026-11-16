@@ -1,0 +1,376 @@
+[
+  {
+    "width": 390,
+    "height": 844,
+    "mobileMenu": true,
+    "errors": [],
+    "entries": [
+      {
+        "route": "/",
+        "status": 200,
+        "title": "Sua jornada continua.A ajuda chega.",
+        "viewport": 390,
+        "documentWidth": 390,
+        "brokenImages": [],
+        "overflow": [
+          {
+            "tag": "IMG",
+            "text": ""
+          }
+        ],
+        "api": [],
+        "validation": null
+      },
+      {
+        "route": "/integrantes",
+        "status": 200,
+        "title": "Integrantes",
+        "viewport": 390,
+        "documentWidth": 390,
+        "brokenImages": [],
+        "overflow": [],
+        "api": [],
+        "validation": null
+      },
+      {
+        "route": "/sobre",
+        "status": 200,
+        "title": "Tecnologia a serviço da mobilidade e das pessoas.",
+        "viewport": 390,
+        "documentWidth": 390,
+        "brokenImages": [],
+        "overflow": [],
+        "api": [],
+        "validation": null
+      },
+      {
+        "route": "/faq",
+        "status": 200,
+        "title": "Perguntas frequentes.",
+        "viewport": 390,
+        "documentWidth": 390,
+        "brokenImages": [],
+        "overflow": [],
+        "api": [],
+        "validation": null
+      },
+      {
+        "route": "/contato",
+        "status": 200,
+        "title": "Vamos conversar?",
+        "viewport": 390,
+        "documentWidth": 390,
+        "brokenImages": [],
+        "overflow": [],
+        "api": [],
+        "validation": null
+      },
+      {
+        "route": "/buscar-guincho",
+        "status": 200,
+        "title": "Encontre seu guincho.",
+        "viewport": 390,
+        "documentWidth": 390,
+        "brokenImages": [],
+        "overflow": [],
+        "api": [
+          {
+            "status": 500,
+            "url": "https://guincho-save-lives-backend.onrender.com/guincheiros"
+          }
+        ],
+        "validation": null
+      },
+      {
+        "route": "/guincheiros/1",
+        "status": 200,
+        "title": "Conheça o profissional.",
+        "viewport": 390,
+        "documentWidth": 390,
+        "brokenImages": [],
+        "overflow": [],
+        "api": [
+          {
+            "status": 500,
+            "url": "https://guincho-save-lives-backend.onrender.com/guincheiros"
+          }
+        ],
+        "validation": null
+      },
+      {
+        "route": "/solicitar-guincho",
+        "status": 200,
+        "title": "Solicitar atendimento.",
+        "viewport": 390,
+        "documentWidth": 390,
+        "brokenImages": [],
+        "overflow": [],
+        "api": [],
+        "validation": {
+          "invalidFields": 4,
+          "posts": 0
+        }
+      },
+      {
+        "route": "/cadastro/guincheiro",
+        "status": 200,
+        "title": "Cadastre seu guincho.",
+        "viewport": 390,
+        "documentWidth": 390,
+        "brokenImages": [],
+        "overflow": [],
+        "api": [],
+        "validation": {
+          "invalidFields": 3,
+          "posts": 0
+        }
+      }
+    ]
+  },
+  {
+    "width": 768,
+    "height": 1024,
+    "mobileMenu": true,
+    "errors": [],
+    "entries": [
+      {
+        "route": "/",
+        "status": 200,
+        "title": "Sua jornada continua.A ajuda chega.",
+        "viewport": 768,
+        "documentWidth": 768,
+        "brokenImages": [],
+        "overflow": [],
+        "api": [],
+        "validation": null
+      },
+      {
+        "route": "/integrantes",
+        "status": 200,
+        "title": "Integrantes",
+        "viewport": 768,
+        "documentWidth": 768,
+        "brokenImages": [],
+        "overflow": [],
+        "api": [],
+        "validation": null
+      },
+      {
+        "route": "/sobre",
+        "status": 200,
+        "title": "Tecnologia a serviço da mobilidade e das pessoas.",
+        "viewport": 768,
+        "documentWidth": 768,
+        "brokenImages": [],
+        "overflow": [],
+        "api": [],
+        "validation": null
+      },
+      {
+        "route": "/faq",
+        "status": 200,
+        "title": "Perguntas frequentes.",
+        "viewport": 768,
+        "documentWidth": 768,
+        "brokenImages": [],
+        "overflow": [],
+        "api": [],
+        "validation": null
+      },
+      {
+        "route": "/contato",
+        "status": 200,
+        "title": "Vamos conversar?",
+        "viewport": 768,
+        "documentWidth": 768,
+        "brokenImages": [],
+        "overflow": [],
+        "api": [],
+        "validation": null
+      },
+      {
+        "route": "/buscar-guincho",
+        "status": 200,
+        "title": "Encontre seu guincho.",
+        "viewport": 768,
+        "documentWidth": 768,
+        "brokenImages": [],
+        "overflow": [],
+        "api": [
+          {
+            "status": 500,
+            "url": "https://guincho-save-lives-backend.onrender.com/guincheiros"
+          }
+        ],
+        "validation": null
+      },
+      {
+        "route": "/guincheiros/1",
+        "status": 200,
+        "title": "Conheça o profissional.",
+        "viewport": 768,
+        "documentWidth": 768,
+        "brokenImages": [],
+        "overflow": [],
+        "api": [
+          {
+            "status": 500,
+            "url": "https://guincho-save-lives-backend.onrender.com/guincheiros"
+          }
+        ],
+        "validation": null
+      },
+      {
+        "route": "/solicitar-guincho",
+        "status": 200,
+        "title": "Solicitar atendimento.",
+        "viewport": 768,
+        "documentWidth": 768,
+        "brokenImages": [],
+        "overflow": [],
+        "api": [],
+        "validation": {
+          "invalidFields": 4,
+          "posts": 0
+        }
+      },
+      {
+        "route": "/cadastro/guincheiro",
+        "status": 200,
+        "title": "Cadastre seu guincho.",
+        "viewport": 768,
+        "documentWidth": 768,
+        "brokenImages": [],
+        "overflow": [],
+        "api": [],
+        "validation": {
+          "invalidFields": 3,
+          "posts": 0
+        }
+      }
+    ]
+  },
+  {
+    "width": 1440,
+    "height": 900,
+    "mobileMenu": null,
+    "errors": [],
+    "entries": [
+      {
+        "route": "/",
+        "status": 200,
+        "title": "Sua jornada continua.A ajuda chega.",
+        "viewport": 1440,
+        "documentWidth": 1440,
+        "brokenImages": [],
+        "overflow": [],
+        "api": [],
+        "validation": null
+      },
+      {
+        "route": "/integrantes",
+        "status": 200,
+        "title": "Integrantes",
+        "viewport": 1440,
+        "documentWidth": 1440,
+        "brokenImages": [],
+        "overflow": [],
+        "api": [],
+        "validation": null
+      },
+      {
+        "route": "/sobre",
+        "status": 200,
+        "title": "Tecnologia a serviço da mobilidade e das pessoas.",
+        "viewport": 1440,
+        "documentWidth": 1440,
+        "brokenImages": [],
+        "overflow": [],
+        "api": [],
+        "validation": null
+      },
+      {
+        "route": "/faq",
+        "status": 200,
+        "title": "Perguntas frequentes.",
+        "viewport": 1440,
+        "documentWidth": 1440,
+        "brokenImages": [],
+        "overflow": [],
+        "api": [],
+        "validation": null
+      },
+      {
+        "route": "/contato",
+        "status": 200,
+        "title": "Vamos conversar?",
+        "viewport": 1440,
+        "documentWidth": 1440,
+        "brokenImages": [],
+        "overflow": [],
+        "api": [],
+        "validation": null
+      },
+      {
+        "route": "/buscar-guincho",
+        "status": 200,
+        "title": "Encontre seu guincho.",
+        "viewport": 1440,
+        "documentWidth": 1440,
+        "brokenImages": [],
+        "overflow": [],
+        "api": [
+          {
+            "status": 500,
+            "url": "https://guincho-save-lives-backend.onrender.com/guincheiros"
+          }
+        ],
+        "validation": null
+      },
+      {
+        "route": "/guincheiros/1",
+        "status": 200,
+        "title": "Conheça o profissional.",
+        "viewport": 1440,
+        "documentWidth": 1440,
+        "brokenImages": [],
+        "overflow": [],
+        "api": [
+          {
+            "status": 500,
+            "url": "https://guincho-save-lives-backend.onrender.com/guincheiros"
+          }
+        ],
+        "validation": null
+      },
+      {
+        "route": "/solicitar-guincho",
+        "status": 200,
+        "title": "Solicitar atendimento.",
+        "viewport": 1440,
+        "documentWidth": 1440,
+        "brokenImages": [],
+        "overflow": [],
+        "api": [],
+        "validation": {
+          "invalidFields": 4,
+          "posts": 0
+        }
+      },
+      {
+        "route": "/cadastro/guincheiro",
+        "status": 200,
+        "title": "Cadastre seu guincho.",
+        "viewport": 1440,
+        "documentWidth": 1440,
+        "brokenImages": [],
+        "overflow": [],
+        "api": [],
+        "validation": {
+          "invalidFields": 3,
+          "posts": 0
+        }
+      }
+    ]
+  }
+]

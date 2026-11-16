@@ -1,0 +1,320 @@
+{
+  "source": "frontend local; não comprova publicação ou sucesso da API",
+  "checks": [
+    {
+      "width": 390,
+      "height": 844,
+      "route": "/",
+      "status": 200,
+      "title": "Sua jornada continua.A ajuda chega.",
+      "documentWidth": 390,
+      "brokenImages": 0,
+      "signalDisplay": null,
+      "validation": null
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "route": "/sobre",
+      "status": 200,
+      "title": "Tecnologia a serviço da mobilidade e das pessoas.",
+      "documentWidth": 390,
+      "brokenImages": 0,
+      "signalDisplay": "none",
+      "validation": null
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "route": "/contato",
+      "status": 200,
+      "title": "Vamos conversar?",
+      "documentWidth": 390,
+      "brokenImages": 0,
+      "signalDisplay": "none",
+      "validation": null
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "route": "/integrantes",
+      "status": 200,
+      "title": "Integrantes",
+      "documentWidth": 390,
+      "brokenImages": 0,
+      "signalDisplay": "none",
+      "validation": null
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "route": "/faq",
+      "status": 200,
+      "title": "Perguntas frequentes.",
+      "documentWidth": 390,
+      "brokenImages": 0,
+      "signalDisplay": "none",
+      "validation": null
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "route": "/buscar-guincho",
+      "status": 200,
+      "title": "Encontre seu guincho.",
+      "documentWidth": 390,
+      "brokenImages": 0,
+      "signalDisplay": "none",
+      "validation": null
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "route": "/guincheiros/1",
+      "status": 200,
+      "title": "Conheça o profissional.",
+      "documentWidth": 390,
+      "brokenImages": 0,
+      "signalDisplay": "none",
+      "validation": null
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "route": "/solicitar-guincho",
+      "status": 200,
+      "title": "Solicitar atendimento.",
+      "documentWidth": 390,
+      "brokenImages": 0,
+      "signalDisplay": "none",
+      "validation": {
+        "invalidFields": 4,
+        "posts": 0
+      }
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "route": "/cadastro/guincheiro",
+      "status": 200,
+      "title": "Cadastre seu guincho.",
+      "documentWidth": 390,
+      "brokenImages": 0,
+      "signalDisplay": "none",
+      "validation": {
+        "invalidFields": 3,
+        "posts": 0
+      }
+    },
+    {
+      "width": 768,
+      "height": 1024,
+      "route": "/",
+      "status": 200,
+      "title": "Sua jornada continua.A ajuda chega.",
+      "documentWidth": 768,
+      "brokenImages": 0,
+      "signalDisplay": null,
+      "validation": null
+    },
+    {
+      "width": 768,
+      "height": 1024,
+      "route": "/sobre",
+      "status": 200,
+      "title": "Tecnologia a serviço da mobilidade e das pessoas.",
+      "documentWidth": 768,
+      "brokenImages": 0,
+      "signalDisplay": "none",
+      "validation": null
+    },
+    {
+      "width": 768,
+      "height": 1024,
+      "route": "/contato",
+      "status": 200,
+      "title": "Vamos conversar?",
+      "documentWidth": 768,
+      "brokenImages": 0,
+      "signalDisplay": "none",
+      "validation": null
+    },
+    {
+      "width": 768,
+      "height": 1024,
+      "route": "/integrantes",
+      "status": 200,
+      "title": "Integrantes",
+      "documentWidth": 768,
+      "brokenImages": 0,
+      "signalDisplay": "none",
+      "validation": null
+    },
+    {
+      "width": 768,
+      "height": 1024,
+      "route": "/faq",
+      "status": 200,
+      "title": "Perguntas frequentes.",
+      "documentWidth": 768,
+      "brokenImages": 0,
+      "signalDisplay": "none",
+      "validation": null
+    },
+    {
+      "width": 768,
+      "height": 1024,
+      "route": "/buscar-guincho",
+      "status": 200,
+      "title": "Encontre seu guincho.",
+      "documentWidth": 768,
+      "brokenImages": 0,
+      "signalDisplay": "none",
+      "validation": null
+    },
+    {
+      "width": 768,
+      "height": 1024,
+      "route": "/guincheiros/1",
+      "status": 200,
+      "title": "Conheça o profissional.",
+      "documentWidth": 768,
+      "brokenImages": 0,
+      "signalDisplay": "none",
+      "validation": null
+    },
+    {
+      "width": 768,
+      "height": 1024,
+      "route": "/solicitar-guincho",
+      "status": 200,
+      "title": "Solicitar atendimento.",
+      "documentWidth": 768,
+      "brokenImages": 0,
+      "signalDisplay": "none",
+      "validation": {
+        "invalidFields": 4,
+        "posts": 0
+      }
+    },
+    {
+      "width": 768,
+      "height": 1024,
+      "route": "/cadastro/guincheiro",
+      "status": 200,
+      "title": "Cadastre seu guincho.",
+      "documentWidth": 768,
+      "brokenImages": 0,
+      "signalDisplay": "none",
+      "validation": {
+        "invalidFields": 3,
+        "posts": 0
+      }
+    },
+    {
+      "width": 1440,
+      "height": 900,
+      "route": "/",
+      "status": 200,
+      "title": "Sua jornada continua.A ajuda chega.",
+      "documentWidth": 1440,
+      "brokenImages": 0,
+      "signalDisplay": null,
+      "validation": null
+    },
+    {
+      "width": 1440,
+      "height": 900,
+      "route": "/sobre",
+      "status": 200,
+      "title": "Tecnologia a serviço da mobilidade e das pessoas.",
+      "documentWidth": 1440,
+      "brokenImages": 0,
+      "signalDisplay": "grid",
+      "validation": null
+    },
+    {
+      "width": 1440,
+      "height": 900,
+      "route": "/contato",
+      "status": 200,
+      "title": "Vamos conversar?",
+      "documentWidth": 1440,
+      "brokenImages": 0,
+      "signalDisplay": "grid",
+      "validation": null
+    },
+    {
+      "width": 1440,
+      "height": 900,
+      "route": "/integrantes",
+      "status": 200,
+      "title": "Integrantes",
+      "documentWidth": 1440,
+      "brokenImages": 0,
+      "signalDisplay": "grid",
+      "validation": null
+    },
+    {
+      "width": 1440,
+      "height": 900,
+      "route": "/faq",
+      "status": 200,
+      "title": "Perguntas frequentes.",
+      "documentWidth": 1440,
+      "brokenImages": 0,
+      "signalDisplay": "grid",
+      "validation": null
+    },
+    {
+      "width": 1440,
+      "height": 900,
+      "route": "/buscar-guincho",
+      "status": 200,
+      "title": "Encontre seu guincho.",
+      "documentWidth": 1440,
+      "brokenImages": 0,
+      "signalDisplay": "grid",
+      "validation": null
+    },
+    {
+      "width": 1440,
+      "height": 900,
+      "route": "/guincheiros/1",
+      "status": 200,
+      "title": "Conheça o profissional.",
+      "documentWidth": 1440,
+      "brokenImages": 0,
+      "signalDisplay": "grid",
+      "validation": null
+    },
+    {
+      "width": 1440,
+      "height": 900,
+      "route": "/solicitar-guincho",
+      "status": 200,
+      "title": "Solicitar atendimento.",
+      "documentWidth": 1440,
+      "brokenImages": 0,
+      "signalDisplay": "grid",
+      "validation": {
+        "invalidFields": 4,
+        "posts": 0
+      }
+    },
+    {
+      "width": 1440,
+      "height": 900,
+      "route": "/cadastro/guincheiro",
+      "status": 200,
+      "title": "Cadastre seu guincho.",
+      "documentWidth": 1440,
+      "brokenImages": 0,
+      "signalDisplay": "grid",
+      "validation": {
+        "invalidFields": 3,
+        "posts": 0
+      }
+    }
+  ]
+}

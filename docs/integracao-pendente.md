@@ -26,11 +26,11 @@ Em **15/11/2026, aproximadamente 21h30 (America/Sao_Paulo)**, consultas diretas 
 
 Ambas responderam com `access-control-allow-origin: http://localhost:5173` ao receber esse Origin. Portanto, nessas consultas o serviço estava alcançável e o CORS aceitou a origem, mas a execução dos endpoints falhou. Sem logs da Render não é possível afirmar a causa interna.
 
-Próximo passo no backend: consultar os logs dessas chamadas, verificar acesso ao Oracle, configuração da conexão, tabelas `T_GSL_GUINCHEIRO` / `T_GSL_SOLICITACAO` e sequences `SQ_GSL_GUINCHEIRO` / `SQ_GSL_SOLICITACAO`. Corrigir o erro identificado e repetir GET e POST. As tabelas e sequences são utilizadas pelos DAOs do commit conferido; não são um diagnóstico confirmado do HTTP 500.
+Próximo passo do integrante responsável pelo backend: consultar os logs dessas chamadas, verificar acesso ao Oracle, configuração da conexão, tabelas `T_GSL_GUINCHEIRO` / `T_GSL_SOLICITACAO` e sequences `SQ_GSL_GUINCHEIRO` / `SQ_GSL_SOLICITACAO`. Corrigir o erro identificado e repetir GET e POST. As tabelas e sequences são utilizadas pelos DAOs do commit conferido; não são um diagnóstico confirmado do HTTP 500. O escopo deste repositório é frontend e integração HTTP; não inclui modificações Java.
 
 Não foi possível comprovar persistência ponta a ponta com a Render nessa condição. Os testes automatizados do frontend usam respostas controladas do contrato Java. Nenhum cadastro de teste foi enviado à produção durante a verificação.
 
-Validação local: TypeScript, ESLint, 29 testes automatizados (19 de integração do cliente com respostas controladas) e build de produção aprovados. A ferramenta de navegador desta sessão estava indisponível (`Computer Use native pipe is unavailable`), portanto não houve validação visual ou interação de formulário em navegador.
+Validação local: TypeScript, ESLint, 29 testes automatizados (19 de integração do cliente com respostas controladas) e build de produção aprovados. A ferramenta integrada de navegador estava indisponível na verificação inicial. Na auditoria posterior de 15/11/2026, Chrome headless verificou nove páginas publicadas nas três resoluções oficiais, menu mobile/tablet e bloqueio de formulários vazios. O erro HTTP 500 da API foi observado na interface; persistência real ainda não foi validada. Consulte [a auditoria atual](revisao-frontend.md).
 
 ## Recursos que ainda exigem backend
 
@@ -46,4 +46,6 @@ Essas rotas não existem nos controllers atuais. As telas de acesso informam a l
 
 O build usa `.env.production` com o modo API e a URL da Render. Se o provedor já tiver variáveis definidas, alinhe `VITE_APP_MODE=api` e `VITE_API_BASE_URL=https://guincho-save-lives-backend.onrender.com` e gere um novo build. Variáveis `VITE_` são incorporadas ao JavaScript público; não coloque segredos nelas.
 
-O `vercel.json` mantém fallback das rotas SPA. Publicação do frontend, vídeo, confirmação das funções dos integrantes e contato oficial continuam a cargo da equipe.
+O `vercel.json` mantém fallback das rotas SPA. A [Vercel pública](https://gincho-save-lives.vercel.app/) foi verificada em 15/11/2026, com produção READY no commit `11984ee`. Vídeo e confirmação das funções dos integrantes ainda dependem da equipe. O contato público agora é o GitHub Issues, indicado no README e na página Contato.
+
+O comando `npm run check:api` consulta as duas rotas por Fetch, verifica HTTP/array/CORS e retorna código de saída 1 em caso de falha, sem exibir dados dos registros. Executado nesta correção de frontend, confirmou HTTP 500 em ambos os GETs e CORS aceitando a Vercel. Não realiza POST nem substitui a validação de persistência depois da correção do servidor.
