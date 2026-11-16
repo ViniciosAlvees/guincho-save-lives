@@ -1,5 +1,7 @@
 import type { NewRequest, Professional, Proposal, TowRequest } from '../types'
+import { ApiError, apiRequest } from './apiClient'
 
+// Provider demonstrativo. O contrato Java abaixo não inventa dados ausentes.
 export interface TowService {
   getProfessionals(): Promise<Professional[]>
   getRequests(): Promise<TowRequest[]>
@@ -10,45 +12,59 @@ export interface TowService {
   updateProfessional(id: string, data: Partial<Professional>): Promise<Professional>
 }
 
-const base = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, '') || ''
+export interface ApiProfessionalInput { name: string; region: string; city: string; towType: string; price: number }
+export interface ApiProfessional extends ApiProfessionalInput { id: string | null }
+export interface ApiRequestInput { clientName: string; origin: string; destination: string; vehicle: string; problem: string; cep?: string | null }
+export interface ApiTowRequest extends ApiRequestInput { id: string | null }
 
-async function request<T>(path: string, options?: RequestInit): Promise<T> {
-  if (!base) throw new Error('VITE_API_BASE_URL não configurada. O modo API não usa dados demonstrativos como fallback.')
-  let response: Response
-  try {
-    response = await fetch(`${base}${path}`, { credentials: 'include', signal: AbortSignal.timeout(15000), ...options, headers: { 'Content-Type': 'application/json', ...options?.headers } })
-  } catch { throw new Error('Falha de rede ou tempo esgotado ao acessar a API. Verifique a conexão e o servidor Java.') }
-  if (!response.ok) throw new Error(`API indisponível: HTTP ${response.status}.`)
-  if (response.status === 204) throw new Error('A API não retornou conteúdo para esta operação.')
-  try { return await response.json() as T }
-  catch { throw new Error('A API retornou uma resposta JSON inválida.') }
+type JsonObject = Record<string, unknown>
+function object(value: unknown): JsonObject {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) throw new Error('A API retornou um registro em formato inesperado.')
+  return value as JsonObject
+}
+function field(data: JsonObject, key: string, alias: string): string {
+  const value = data[key] ?? data[alias]
+  if (typeof value !== 'string' || !value.trim()) throw new Error('A API retornou um registro em formato inesperado.')
+  return value
+}
+function identifier(data: JsonObject, requireId: boolean): string | null {
+  const id = data.id
+  if (typeof id === 'string' && id.trim()) return id
+  if (typeof id === 'number' && Number.isSafeInteger(id) && id > 0) return String(id)
+  if (!requireId && id == null) return null
+  throw new Error('A API retornou um identificador em formato inesperado.')
+}
+function professional(value: unknown, requireId = true): ApiProfessional {
+  const data = object(value)
+  const price = data.price ?? data.preco
+  if (typeof price !== 'number' || !Number.isFinite(price) || price < 0) throw new Error('A API retornou um preço em formato inesperado.')
+  return { id: identifier(data, requireId), name: field(data, 'name', 'nome'), region: field(data, 'region', 'regiao'), city: field(data, 'city', 'cidade'), towType: field(data, 'towType', 'tipoGuincho'), price }
+}
+function towRequest(value: unknown, requireId = true): ApiTowRequest {
+  const data = object(value)
+  if (data.cep != null && typeof data.cep !== 'string') throw new Error('A API retornou um CEP em formato inesperado.')
+  return { id: identifier(data, requireId), clientName: field(data, 'clientName', 'nomeCliente'), origin: field(data, 'origin', 'origem'), destination: field(data, 'destination', 'destino'), vehicle: field(data, 'vehicle', 'veiculo'), problem: field(data, 'problem', 'problema'), cep: data.cep as string | null | undefined }
+}
+function list<T>(value: unknown, parse: (item: unknown) => T): T[] {
+  if (!Array.isArray(value)) throw new Error('A API retornou uma lista em formato inesperado.')
+  return value.map(item => parse(item))
+}
+async function create<T>(path: string, data: unknown, parse: (item: unknown, requireId: boolean) => T): Promise<T> {
+  const result = await apiRequest(path, data)
+  try { return parse(result, false) }
+  catch { throw new ApiError('A resposta não confirma os dados do registro. Confira antes de reenviar para evitar duplicidade.', true) }
 }
 
-export const apiService: TowService = {
-  getProfessionals: async () => {
-    const data = await request<unknown>('/guincheiros')
-    if (!Array.isArray(data) || !data.every(isProfessional)) throw new Error('O servidor retornou uma lista de profissionais em formato inesperado. Entre em contato com a equipe.')
-    return data
-  },
-  getRequests: () => request('/solicitacoes'),
-  createRequest: async data => {
-    const result = await request<TowRequest>('/solicitacoes', { method: 'POST', body: JSON.stringify(data) })
-    if (!result || typeof result.id !== 'string' || typeof result.status !== 'string') throw new Error('A resposta não confirma o protocolo e o status da solicitação. Confira o backend antes de reenviar para evitar duplicidade.')
-    return result
-  },
-  updateRequest: (id, data) => request(`/solicitacoes/${encodeURIComponent(id)}`, { method: 'PUT', body: JSON.stringify(data) }),
-  createProposal: (id, data) => request(`/solicitacoes/${encodeURIComponent(id)}/propostas`, { method: 'POST', body: JSON.stringify(data) }),
-  updateProposal: (id, proposalId, data) => request(`/solicitacoes/${encodeURIComponent(id)}/propostas/${encodeURIComponent(proposalId)}`, { method: 'PUT', body: JSON.stringify(data) }),
-  updateProfessional: (id, data) => request(`/guincheiros/${encodeURIComponent(id)}`, { method: 'PUT', body: JSON.stringify(data) }),
+// Rotas verificadas nos dois controllers do repositório Java.
+export const apiService = {
+  getProfessionals: async (): Promise<ApiProfessional[]> => list(await apiRequest('/guincheiros'), professional),
+  getRequests: async (): Promise<ApiTowRequest[]> => list(await apiRequest('/solicitacoes'), towRequest),
+  createProfessional: (data: ApiProfessionalInput): Promise<ApiProfessional> => create('/guincheiros', {
+    name: data.name.trim(), region: data.region.trim(), city: data.city.trim(), towType: data.towType.trim(), price: data.price,
+  }, professional),
+  createRequest: (data: ApiRequestInput): Promise<ApiTowRequest> => create('/solicitacoes', {
+    clientName: data.clientName.trim(), origin: data.origin.trim(), destination: data.destination.trim(), vehicle: data.vehicle.trim(), problem: data.problem.trim(), cep: data.cep?.replace(/\D/g, '') || null,
+  }, towRequest),
 }
 
-function isProfessional(value: unknown): value is Professional {
-  if (!value || typeof value !== 'object') return false
-  const p = value as Record<string, unknown>
-  return ['id', 'name', 'region', 'city', 'about', 'towType'].every(key => typeof p[key] === 'string')
-    && typeof p.price === 'number' && Number.isFinite(p.price) && p.price >= 0
-    && typeof p.available === 'boolean' && Array.isArray(p.vehicles) && p.vehicles.every(vehicle => typeof vehicle === 'string')
-    && typeof p.lat === 'number' && typeof p.lng === 'number' && typeof p.jobs === 'number' && typeof p.demo === 'boolean'
-}
-
-export const isApiMode = import.meta.env.VITE_APP_MODE === 'api'
+export const isApiMode = import.meta.env.VITE_APP_MODE !== 'demo'

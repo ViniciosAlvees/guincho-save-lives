@@ -3,6 +3,7 @@ import type { ApprovalStatus, ClientAccount, DemoState, DriverApplication, NewRe
 import { addProposalToRequest, confirmProposal, moveStatus } from '../utils/workflow'
 import { canReview, isActiveClient, isApprovedDriver, isContractable } from '../utils/accessRules'
 import { loadDemoState, saveDemoState } from '../services/demoService'
+import { isApiMode } from '../services/towService'
 
 interface DemoContextValue extends DemoState {
   clientSessionId: string | null
@@ -32,13 +33,13 @@ const DemoContext = createContext<DemoContextValue | null>(null)
 const uid = () => crypto.randomUUID()
 
 export function DemoProvider({ children }: { children: ReactNode }) {
-  const [state, setState] = useState<DemoState>(loadDemoState)
+  const [state, setState] = useState<DemoState>(() => isApiMode ? { role: 'cliente', clientName: '', professionalId: '', professionals: [], requests: [], clientAccounts: [], driverApplications: [], reviews: [] } : loadDemoState())
   const [clientSessionId, setClientSessionId] = useState<string | null>(null)
   const [driverSessionId, setDriverSessionId] = useState<string | null>(null)
   const [employeeDemo, setEmployeeDemo] = useState(false)
   const stateRef = useRef(state)
   useEffect(() => { stateRef.current = state }, [state])
-  useEffect(() => { saveDemoState(state) }, [state])
+  useEffect(() => { if (!isApiMode) saveDemoState(state) }, [state])
 
   const updateRequest = (id: string, transform: (request: TowRequest) => TowRequest) => {
     const previous = stateRef.current
