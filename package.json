@@ -9,7 +9,9 @@
     "preview": "vite preview --host 0.0.0.0",
     "typecheck": "tsc -b --pretty false",
     "lint": "eslint .",
-    "test": "vitest run"
+    "test": "vitest run",
+    "package:delivery": "node scripts/package-delivery.mjs",
+    "check:api": "node scripts/check-api.mjs"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.0",
@@ -29,6 +31,7 @@
     "@vitejs/plugin-react": "^4.7.0",
     "eslint": "^9.0.0",
     "eslint-plugin-react-hooks": "^5.0.0",
+    "fflate": "^0.8.3",
     "globals": "^15.0.0",
     "typescript": "^5.9.0",
     "typescript-eslint": "^8.0.0",
