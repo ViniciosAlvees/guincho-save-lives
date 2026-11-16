@@ -1,32 +1,59 @@
-# Contrato de API proposto — pendente de alinhamento
+# Contrato da API Java
 
-Este documento é uma **proposta** para integração futura com a API Java Spring Boot. Endpoints, autenticação, campos, erros e paginação definitivos dependem dos colegas responsáveis. Nenhum backend está incluído aqui.
+Base: `https://guincho-save-lives-backend.onrender.com`, configurável por `VITE_API_BASE_URL`. Fonte: [backend Java](https://github.com/velascoguzmanvictorhugo-ui/guincho-save-lives-backend), commit `c3d9505ae37bd37d5d2d087867576e2f59e73a8f`.
 
-Base: `VITE_API_BASE_URL`; respostas JSON; erros HTTP não são substituídos por mocks. O cliente atual está em `src/services/towService.ts` e utiliza somente Fetch API.
-
-| Método | Caminho proposto | Objetivo |
+| Método | Rota | Corpo / resposta |
 |---|---|---|
-| GET | `/guincheiros` | Listar profissionais/filtros futuros |
-| PUT | `/guincheiros/{id}` | Atualizar região/disponibilidade |
-| GET | `/solicitacoes` | Listar chamados |
-| POST | `/solicitacoes` | Criar chamado |
-| PUT | `/solicitacoes/{id}` | Atualizar status/dados permitidos |
-| POST | `/solicitacoes/{id}/propostas` | Criar proposta |
-| PUT | `/solicitacoes/{id}/propostas/{propostaId}` | Negociar/aceitar/recusar |
+| GET | `/guincheiros` | Array JSON de guincheiros |
+| POST | `/guincheiros` | Cadastro; HTTP 201 com objeto enviado |
+| GET | `/solicitacoes` | Array JSON de solicitações |
+| POST | `/solicitacoes` | Cadastro; HTTP 201 com objeto enviado e endereço quando consultado |
 
-Modelos TypeScript: `Professional`, `TowRequest`, `Proposal`, `ChatMessage`, `NewRequest` em `src/types/index.ts`. Contrato de serviços: `TowService` em `src/services/towService.ts`.
+## Guincheiro
 
-## Pontos a decidir com o backend
+```json
+{
+  "id": "12",
+  "name": "Profissional fictício",
+  "region": "Centro",
+  "city": "São Paulo",
+  "towType": "Plataforma",
+  "price": 180
+}
+```
 
-- Identidade/autorização reais por perfil; proibir manipulação de chamados alheios.
-- IDs, enumerações de status, validação de transições no servidor e concorrência transacional para impedir duas confirmações simultâneas.
-- Filtros, paginação, formatos de erro, timezone e CORS.
-- Dados de localização e privacidade; geocodificação e roteamento são serviços separados.
-- Estratégia de chat real (polling, SSE ou WebSocket), não implementada neste protótipo.
-- Contrato de telefone/WhatsApp e consentimento.
+O POST envia apenas `name`, `region`, `city`, `towType` e `price`. O ID da lista vem do Oracle. Os campos `available`, `lat`, `lng`, `vehicles`, `jobs`, `about`, avaliações e aprovação não fazem parte do modelo Java.
 
-O provider `demo` usa armazenamento local, compartilhado com o React Context. Em modo `api`, `/buscar-guincho` exibe a lista recebida de `GET /guincheiros`, `/guincheiros/:id` seleciona o profissional dessa lista e `/solicitar-guincho` envia `POST /solicitacoes`. O formulário exibe o protocolo e o status devolvidos pelo servidor; campos são preservados em caso de erro. As demais áreas aguardam seus contratos específicos.
+## Solicitação
 
-O GET deve retornar um array JSON de `Professional` (IDs em string), inclusive `[]` para vazio. O POST deve retornar o objeto `TowRequest` criado, incluindo `id` e `status`; um 204 não confirma esse fluxo. Respostas incompatíveis geram mensagem de erro. As chamadas enviam cookies com `credentials: include` e têm timeout de 15 segundos. O backend deve definir autenticação, autorizar cada operação e configurar CORS para a origem exata do frontend com credenciais. Não colocar segredos em variáveis `VITE_*`. Se o Java usar paginação, nomes diferentes ou token Bearer, ajustar este contrato e o cliente antes da entrega.
+```json
+{
+  "id": "34",
+  "clientName": "Cliente fictício",
+  "origin": "Rua de origem",
+  "destination": "Oficina destino",
+  "vehicle": "Carro",
+  "problem": "Pane elétrica",
+  "cep": "01001000"
+}
+```
 
-Esses fluxos foram testados com respostas controladas; **não comprovam integração com Java remoto**. Demonstrar a gravação real e uma consulta posterior ao servidor, sem mocks, antes de marcar o requisito como concluído.
+O POST envia os campos acima, exceto `id`. CEP opcional: remover máscara e enviar `null` se vazio. CEP informado aciona consulta de endereço no serviço Java. Não há vínculo com um profissional, status de atendimento, descrição separada do veículo, detalhes adicionais, propostas ou mensagens nesse modelo.
+
+As anotações `@JsonProperty` usam nomes em inglês; os getters do domínio também podem expor nomes portugueses. O cliente aceita `nome`, `regiao`, `cidade`, `tipoGuincho`, `preco`, `nomeCliente`, `origem`, `destino`, `veiculo` e `problema` como aliases de leitura, enviando somente os nomes declarados nas anotações.
+
+## IDs e confirmação de escrita
+
+Os DAOs atuais usam sequences ao inserir, mas não atualizam o ID no objeto retornado pelo POST. Portanto, `id: null` é uma resposta possível de criação bem-sucedida; a interface confirma o recebimento e informa que não houve protocolo na resposta. IDs da listagem são obrigatórios e normalizados para strings. Não se cria protocolo, status ou data no navegador.
+
+Erro de rede, HTTP 5xx ou resposta inválida após POST pode acontecer depois da persistência. O frontend não repete a escrita automaticamente e pausa o reenvio no formulário. Para concluir a integração, o backend deve retornar o registro persistido e fornecer tratamento consistente dessas falhas.
+
+## HTTP e CORS
+
+Fetch com `credentials: 'omit'`, compatível com `CorsConfig.allowCredentials(false)`. GET sem Content-Type; POST com `Content-Type: application/json`. Timeout de 90 segundos. Não há cookies nem autenticação nesses controllers. Nunca colocar segredos em `VITE_*`.
+
+Cliente e tipos: `src/services/apiClient.ts` e `src/services/towService.ts`. Tipos do fluxo demo continuam separados em `src/types/index.ts`. As operações antigas propostas em `platformService.ts` não são chamadas pelo modo API.
+
+## Verificação
+
+Testes automatizados usam respostas controladas do contrato acima. A verificação remota em 15/11/2026 encontrou HTTP 500 em ambos os GETs, com CORS aceitando a origem local. Consulta e persistência ponta a ponta dependem da correção desse erro no serviço publicado. Consulte [diagnóstico e pendências](integracao-pendente.md).

@@ -4,7 +4,7 @@ Revisão em 12/11/2026 do repositório local, comparado ao PDF fornecido: regras
 
 ## Resultado
 
-O frontend tem a estrutura e os fluxos demonstrativos principais, mas **a entrega ainda não está completa**. A API Java remota, a Vercel, o vídeo, os links definitivos e a participação do grupo no Git continuam pendentes. Não é possível garantir nota nem ausência de penalidades antes de conferir a versão publicada e o ZIP final.
+O frontend tem a estrutura e os fluxos demonstrativos principais, mas **a entrega ainda não está completa**. Atualização de 15/11/2026: a URL Java foi fornecida e o frontend foi adaptado ao contrato real; a Render retorna HTTP 500 nos GETs, impedindo comprovar o fluxo com persistência. Veja o [diagnóstico atualizado](integracao-pendente.md); referências abaixo a contrato ou URL não fornecidos descrevem a revisão anterior. A Vercel, o vídeo, os links definitivos e a participação do grupo no Git ainda precisam ser conferidos. Não é possível garantir nota nem ausência de penalidades antes de conferir a versão publicada e o ZIP final.
 
 | Critério do PDF | Situação constatada |
 |---|---|
