@@ -1,6 +1,8 @@
 # Contrato da API Java
 
-Base: `https://guincho-save-lives-backend.onrender.com`, configurável por `VITE_API_BASE_URL`. Fonte: [backend Java](https://github.com/velascoguzmanvictorhugo-ui/guincho-save-lives-backend), commit `c3d9505ae37bd37d5d2d087867576e2f59e73a8f`.
+Base: `https://guincho-save-lives-backend.onrender.com`, configurável por `VITE_API_BASE_URL`. Fonte: [backend Java](https://github.com/velascoguzmanvictorhugo-ui/guincho-save-lives-backend), commit `45c50e18f5ab37c6ea69a5ce1377d35a05fec357`, conferido em 17/11/2026.
+
+**Segurança:** a listagem publicada de solicitações ainda é anônima. A correção preparada em [support/backend-security](../support/backend-security/README.md) passa a exigir sessão nessa rota e adiciona `/funcionarios/sessao` e `/funcionarios/solicitacoes`. Essas mudanças ainda não foram aplicadas no Render. Não colocar o PIN ou as credenciais do banco no frontend.
 
 | Método | Rota | Corpo / resposta |
 |---|---|---|
@@ -56,4 +58,4 @@ Cliente e tipos: `src/services/apiClient.ts` e `src/services/towService.ts`. Tip
 
 ## Verificação
 
-Testes automatizados usam respostas controladas do contrato acima. A verificação remota em 15/11/2026 encontrou HTTP 500 em ambos os GETs, com CORS aceitando a origem local. Consulta e persistência ponta a ponta dependem da correção desse erro no serviço publicado. Consulte [diagnóstico e pendências](integracao-pendente.md).
+Em 17/11/2026 os GETs responderam 200 e os POSTs de guincheiro e solicitação fictícios responderam 201, com persistência confirmada por consulta posterior. Houve também um HTTP 500 intermitente no navegador; não se afirma estabilidade absoluta do serviço. Os 55 testes do frontend incluem contrato controlado e autenticação; o pacote Java separado passou em 12 testes. Consulte [diagnóstico e pendências](integracao-pendente.md).

@@ -1,11 +1,18 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { MapPin, Radio, ShieldCheck } from 'lucide-react'
 import towTruck from '../assets/hero-tow-truck-blue.png'
 
 export function HeroAnimation() {
-  const [skipped, setSkipped] = useState(false)
+  const [paused, setPaused] = useState(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches)
 
-  return <div className={`hero-scene ${skipped ? 'intro-skipped' : ''}`} role="group" aria-label="Cena animada de um guincho em uma estrada digital">
+  useEffect(() => {
+    const preference = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const update = (event: MediaQueryListEvent) => setPaused(event.matches)
+    preference.addEventListener('change', update)
+    return () => preference.removeEventListener('change', update)
+  }, [])
+
+  return <div className={`hero-scene ${paused ? 'is-paused' : ''}`} data-motion={paused ? 'paused' : 'playing'} role="group" aria-label="Cena animada de um guincho em uma estrada digital">
     <div className="hero-scene__aura" aria-hidden="true"/>
     <div className="hero-scene__rings" aria-hidden="true"><span/><span/><span/></div>
     <div className="hero-scene__horizon" aria-hidden="true"/>
@@ -16,7 +23,6 @@ export function HeroAnimation() {
     <div className="hero-scene__telemetry hero-scene__telemetry--top"><Radio size={15}/><span>REDE ATIVA</span><span className="status-dot"/></div>
     <div className="hero-scene__telemetry hero-scene__telemetry--bottom"><ShieldCheck size={15}/><span>CONEXÃO DEMONSTRATIVA</span></div>
     <div className="hero-scene__wordmark"><span>SISTEMA CONECTADO</span><strong>GUINCHO <em>SAVE LIVES</em></strong></div>
-    <button onClick={() => setSkipped(true)} className="hero-scene__skip" disabled={skipped}>{skipped ? 'Animação pulada' : 'Pular animação'}</button>
-    <span className="hero-scene__disclaimer">Simulação visual. Sem conexão com serviço real.</span>
+    <button type="button" onClick={() => setPaused(value => !value)} className="hero-scene__skip" aria-pressed={paused}>{paused ? 'Retomar animação' : 'Pausar animação'}</button>
   </div>
 }

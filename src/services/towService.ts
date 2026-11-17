@@ -56,9 +56,11 @@ async function create<T>(path: string, data: unknown, parse: (item: unknown, req
 }
 
 // Rotas verificadas nos dois controllers do repositório Java.
+export function parseApiRequests(value: unknown): ApiTowRequest[] { return list(value, towRequest) }
+
 export const apiService = {
   getProfessionals: async (): Promise<ApiProfessional[]> => list(await apiRequest('/guincheiros'), professional),
-  getRequests: async (): Promise<ApiTowRequest[]> => list(await apiRequest('/solicitacoes'), towRequest),
+  getRequests: async (): Promise<ApiTowRequest[]> => parseApiRequests(await apiRequest('/solicitacoes')),
   createProfessional: (data: ApiProfessionalInput): Promise<ApiProfessional> => create('/guincheiros', {
     name: data.name.trim(), region: data.region.trim(), city: data.city.trim(), towType: data.towType.trim(), price: data.price,
   }, professional),

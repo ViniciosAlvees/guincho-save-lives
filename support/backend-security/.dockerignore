@@ -1,0 +1,12 @@
+.git
+.idea
+target
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+wallet
+Wallet_*
+relatorio-chamados.txt

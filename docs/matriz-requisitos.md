@@ -1,23 +1,19 @@
-# Matriz de requisitos — auditoria de 15/11/2026
+# Matriz de requisitos - 17/11/2026
 
-| Critério | Peso oficial | Evidência atual | Situação |
-|---|---:|---|---|
-| React, Vite e TypeScript | 10 | Build, lint, 29 testes e instalação/execução a partir de ZIP extraído | Comprovado |
-| Componentes, páginas e rotas | 10 | Cinco institucionais, páginas da solução, reutilização e parâmetro; renderização pública | Comprovado no alcance testado; dados do perfil dependem da API |
-| Tailwind e responsividade | 8 | Nove páginas em 390×844, 768×1024 e 1440×900; sem rolagem horizontal | Ajuste de sobreposição decorativa no tablet feito localmente; publicar |
-| API Java | 18 | Serviços Fetch, tipos e estados; CORS aceita a Vercel | **Pendente:** GET retorna 500 e persistência não comprovada |
-| Formulários e UX | 7 | Campos, validação de envio vazio, estados e mensagens | Parcial: sucesso com API real ainda não comprovado |
-| Vercel | 7 | https://gincho-save-lives.vercel.app/ pública, produção READY em `11984ee` | Publicada; integração falha no backend; correções locais ainda não publicadas |
-| GitHub, README e vídeo | 10 | Repositório público, README e canal de contato no GitHub atualizados | **Pendente:** `main` com 12 commits de um único autor; colegas aplicarão contribuições e vídeo ainda será produzido |
-| Apresentação presencial | 30 | Deve ser realizada de 23 a 27/11 | Pendente; todos devem participar e explicar o código |
-| **Total da rubrica** | **100** | Não equivale a uma nota atribuída nesta auditoria | |
+| Critério | Peso | Estado |
+|---|---:|---|
+| React, Vite, TypeScript, estrutura e tipagem | 10 | Implementados; build, lint e testes aprovados |
+| Componentes, cinco institucionais, páginas da solução e parâmetro | 10 | Implementados; navegação pública e local testada |
+| Tailwind; 390x844, 768x1024, 1440x900 | 8 | Verificados; controles da animação e Menu corrigidos |
+| API Java: GET, escrita, serviços, estados e tipos | 18 | GET e POST reais comprovados; intermitência HTTP 500 e segurança do servidor pendentes |
+| Formulários e UX | 7 | Validação, carregamento, falha, sucesso e prevenção de reenvio verificados |
+| Vercel | 7 | Produção READY no commit `abca0a5`, vinculada ao GitHub correto; novas alterações exigem publicação |
+| GitHub, README e vídeo | 10 | README e repositório presentes; vídeos sem URL e cinco commits por cada integrante ainda não comprovados |
+| Apresentação presencial | 30 | Pendente de realização pela equipe |
+| Total | 100 | Pesos oficiais, sem atribuição de nota |
 
-Exigência Git: mínimo de 15 commits no total e cinco por integrante. Com cinco integrantes, pelo menos 25 commits autênticos são necessários. Não contar checkpoints auxiliares como participação do grupo.
+Evidências desta revisão: 55 testes de frontend, 12 testes Java do pacote de correção, 30 acessos à produção original e 36 verificações da versão final local. Funcionários foram testados com contrato controlado e permanecem fechados até a aplicação do backend correspondente. Pitch está preparado para links posteriores.
 
-ZIP de conferência do commit `a09aff1`: 3.733.807 bytes, sem `node_modules` e `.git`, com identificação, assets, fontes e configurações; instalação, build e início do servidor aprovados após extração. Essa amostra não comprova o ZIP final nem a submissão.
+Penalidades: ZIP acima de 50 MB (-2), `node_modules` no ZIP (-3), arquivos essenciais ausentes (-10), substituto de Fetch (-10), falta do ZIP no Portal (zero), template pronto (zero), tecnologia proibida (zero), proposta incompatível (zero), plágio (zero + ocorrência). Consulte a [auditoria completa](revisao-frontend.md) para as evidências e limites de cada conclusão.
 
-Entrega: um ZIP de até 50 MB, com `identificacao.txt`, anexado pelo representante no Portal do Aluno até **19/11/2026, 23h55**. O cadastro do grupo deveria ter ocorrido até 13/11; conferir comprovante.
-
-Veja [a auditoria completa, com todos os itens de penalidade](revisao-frontend.md).
-
-Correções possíveis no frontend já aplicadas localmente: Sobre com CitizenTech, metas ODS e indicadores; Home coerente com o modo API; canal de contato real; layout de tablet; diagnóstico GET e empacotador verificado. Alterações Java ficam com o responsável pelo backend, conforme orientação do usuário. Nenhum vídeo, commit de colega ou resultado de impacto foi fabricado.
+Prazo: 19/11/2026 às 23h55, pelo representante no Portal. O TXT de identificação e a participação/autoria de todos precisam ser conferidos. A correção da segurança no servidor e a substituição da credencial exposta são necessárias antes de considerar o sistema protegido.

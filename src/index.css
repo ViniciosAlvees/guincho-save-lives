@@ -34,6 +34,9 @@ button { cursor: pointer; }
 .nav-link:hover::after, .nav-link.is-active::after { inset-inline: 0; }
 .mobile-nav { background: #080d13f5; box-shadow: 0 22px 45px #000b; }
 .menu-toggle { background: #172126; }
+.site-header .site-menu { position: absolute; overflow-y: auto; }
+.site-header .header-action { display: none; }
+@media (min-width: 640px) { .site-header .header-action { display: inline-flex; } }
 .site-footer { position: relative; background: linear-gradient(180deg, #0c131b, #070b10); }
 .site-footer::before { content: ""; position: absolute; top: 0; left: 10%; right: 10%; height: 1px; background: linear-gradient(90deg, transparent, #40baff80, transparent); }
 .route-frame { animation: route-enter .6s cubic-bezier(.2,.7,.2,1) both; }
@@ -133,8 +136,7 @@ button:disabled { cursor: not-allowed; opacity: .5; transform: none; }
 .hero-scene__wordmark em { color: #40baff; font-style: normal; }
 .hero-scene__skip { position: absolute; z-index: 5; right: 0; top: 0; padding: .6rem .85rem; border: 1px solid #a4c5bf55; border-radius: .5rem; background: #0b151dd9; color: #d3e5e8; font-size: .72rem; font-weight: 700; }
 .hero-scene__skip:hover { border-color: #40baff; color: #40baff; }
-.hero-scene__disclaimer { position: absolute; left: 1%; bottom: 2%; color: #88a0a8; font-size: .6rem; }
-.intro-skipped .hero-scene__truck-wrap, .intro-skipped .hero-scene__truck, .intro-skipped .hero-scene__pin, .intro-skipped .hero-scene__wordmark, .intro-skipped .hero-scene__telemetry { animation: none; }
+.hero-scene.is-paused *, .hero-scene.is-paused *::before, .hero-scene.is-paused *::after { animation-play-state: paused; }
 @keyframes truck-arrive { from { opacity: 0; transform: translate(35%, 15%) scale(.73) rotate(-4deg); filter: blur(8px); } to { opacity: 1; transform: translate(0) scale(1) rotate(0); filter: blur(0); } }
 @keyframes truck-idle { 50% { transform: translateY(-8px); } }
 @keyframes pin-drop { from { opacity: 0; transform: translateY(-30px) scale(.7); } to { opacity: 1; transform: translateY(0) scale(1); } }
@@ -190,21 +192,22 @@ details.surface[open] summary { color: #40baff; }
   .hero-subtitle { margin-top: 1.3rem; font-size: 1rem; }
   .hero-actions { margin-top: 1.5rem; }
   .hero-search { margin-top: 2rem; }
-  .hero-scene { height: 355px; margin-top: 0; }
+  .hero-scene { height: 355px; margin-top: 1.5rem; }
   .hero-scene__truck-wrap { width: 114%; left: -8%; top: 24%; }
   .hero-scene__pin { top: 12%; right: 1%; font-size: .45rem; }
   .hero-scene__telemetry--top { left: 0; top: 13%; }
   .hero-scene__telemetry--bottom { display: none; }
   .hero-scene__wordmark { bottom: 10%; right: 0; }
   .hero-scene__road { inset: 58% -10% -5%; }
-  .hero-scene__skip { top: -1rem; }
+  .hero-scene__skip { top: 0; }
   .hero-edge { bottom: 1rem; font-size: .5rem; }
   .surface { backdrop-filter: blur(8px); }
   .surface-hover:hover { transform: translateY(-3px); }
   .map-shell__coordinates { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation: none !important; scroll-behavior: auto !important; transition: none !important; }
+  /* A cena só volta a animar após a pessoa escolher Retomar animação. */
+  *:not(.hero-scene[data-motion="playing"] *), *:not(.hero-scene[data-motion="playing"] *)::before, *:not(.hero-scene[data-motion="playing"] *)::after { animation: none !important; scroll-behavior: auto !important; transition: none !important; }
   .motion-reveal { opacity: 1; transform: none; }
   .hero-scene__truck-wrap, .hero-scene__pin, .hero-scene__wordmark, .hero-scene__telemetry, .hero-kicker, .hero-headline span, .hero-subtitle, .hero-actions, .hero-search, .hero-caption { opacity: 1; transform: none; filter: none; }
 }

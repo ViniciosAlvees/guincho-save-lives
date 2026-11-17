@@ -1,51 +1,23 @@
-# Integração Java / Render
+# Integração Java / Render - 17/11/2026
 
-Frontend configurado para `https://guincho-save-lives-backend.onrender.com` por padrão. Contrato conferido no commit `c3d9505ae37bd37d5d2d087867576e2f59e73a8f` do [backend](https://github.com/velascoguzmanvictorhugo-ui/guincho-save-lives-backend).
+Base do frontend: `https://guincho-save-lives-backend.onrender.com`, modo API por padrão. GETs, POSTs e validação do contrato usam Fetch; sem cookies, sem retorno automático de mocks e sem repetição automática de escrita.
 
-## Implementado no frontend
+## Comprovado
 
-- Busca por região/cidade e perfil usando `GET /guincheiros`.
-- Cadastro simplificado do profissional em `/cadastro/guincheiro` usando `POST /guincheiros`.
-- Pedido em `/solicitar-guincho` usando `POST /solicitacoes`, com nome do cliente e CEP opcional.
-- Cliente de `GET /solicitacoes` disponível em `apiService.getRequests()`, sem expor a lista pública de nomes e endereços na interface.
-- Fetch sem cookies, compatível com `allowCredentials(false)` do Java. GET sem Content-Type desnecessário; POST com JSON. Timeout de 90 segundos para inicialização da Render.
-- Validação dos dados recebidos e mensagens de carregamento, erro, lista vazia e sucesso, sem fallback para mocks.
-- Nenhuma disponibilidade, coordenada, avaliação, data ou status de atendimento é inventado quando ausente no Java.
-- POST com resposta válida e `id: null` é tratado como registro recebido, sem inventar protocolo. O DAO gera o ID no Oracle, mas não atribui esse ID ao objeto devolvido pelo controller.
-- Não há reenvio automático de POST. Falhas de conexão, HTTP 5xx e respostas inválidas bloqueiam novo envio no mesmo formulário, pois o Java pode ter persistido antes da falha.
-- Modo demo continua disponível explicitamente em `.env.local` com `VITE_APP_MODE=demo`; dados locais não são carregados nem gravados pelo Context no modo API.
+- `GET /guincheiros` e `GET /solicitacoes`: HTTP 200 e arrays JSON; CORS aceitou a origem da Vercel e o preflight do POST JSON.
+- Busca e perfil exibiram dados reais na interface pública nas três resoluções oficiais.
+- Cadastro de guincheiro fictício: HTTP 201, seguido de GET com o registro persistido e ID 8.
+- Solicitação fictícia: HTTP 201, seguida de GET com o registro persistido e ID 6.
+- Os POSTs ainda devolvem ID nulo; a interface não inventa um protocolo. O ID acima foi confirmado em consulta posterior.
 
-## Bloqueio observado no serviço publicado
+## Pendências atuais
 
-Em **15/11/2026, aproximadamente 21h30 (America/Sao_Paulo)**, consultas diretas à Render retornaram:
+1. Houve um HTTP 500 intermitente na navegação, embora consultas seguintes tenham respondido 200. Sem logs do Render não se afirma a causa interna.
+2. O código Java público contém credencial fixa do banco. Ela precisa ser substituída no banco e removida da configuração versionada. Não registrar seu valor em relatório, issue, frontend ou commit novo.
+3. `GET /solicitacoes` ainda é anônimo e devolve dados de pedidos. A correção preparada exige sessão nessa listagem e na nova área de funcionários.
+4. A API publicada não tem `/funcionarios/sessao` ou `/funcionarios/solicitacoes`. O frontend não libera acesso com PIN local. O responsável deve aplicar [a correção compilada e testada](../support/backend-security/README.md), cadastrar as variáveis privadas e publicar no Render.
+5. Aprovação de documentos, alteração de status, negociação, chat e contas reais continuam sem endpoints implementados.
 
-| Rota | Resultado |
-|---|---|
-| `GET /guincheiros` | `HTTP 500`, JSON com `error: Internal Server Error` |
-| `GET /solicitacoes` | `HTTP 500`, JSON com `error: Internal Server Error` |
+`npm run check:api` passou a esperar HTTP 401/403 na listagem anônima de pedidos. No serviço antigo, o comando deve falhar por segurança enquanto essa rota estiver pública, mesmo quando os GETs funcionam tecnicamente. Não exibe nomes/endereços e não faz escrita.
 
-Ambas responderam com `access-control-allow-origin: http://localhost:5173` ao receber esse Origin. Portanto, nessas consultas o serviço estava alcançável e o CORS aceitou a origem, mas a execução dos endpoints falhou. Sem logs da Render não é possível afirmar a causa interna.
-
-Próximo passo do integrante responsável pelo backend: consultar os logs dessas chamadas, verificar acesso ao Oracle, configuração da conexão, tabelas `T_GSL_GUINCHEIRO` / `T_GSL_SOLICITACAO` e sequences `SQ_GSL_GUINCHEIRO` / `SQ_GSL_SOLICITACAO`. Corrigir o erro identificado e repetir GET e POST. As tabelas e sequences são utilizadas pelos DAOs do commit conferido; não são um diagnóstico confirmado do HTTP 500. O escopo deste repositório é frontend e integração HTTP; não inclui modificações Java.
-
-Não foi possível comprovar persistência ponta a ponta com a Render nessa condição. Os testes automatizados do frontend usam respostas controladas do contrato Java. Nenhum cadastro de teste foi enviado à produção durante a verificação.
-
-Validação local: TypeScript, ESLint, 29 testes automatizados (19 de integração do cliente com respostas controladas) e build de produção aprovados. A ferramenta integrada de navegador estava indisponível na verificação inicial. Na auditoria posterior de 15/11/2026, Chrome headless verificou nove páginas publicadas nas três resoluções oficiais, menu mobile/tablet e bloqueio de formulários vazios. O erro HTTP 500 da API foi observado na interface; persistência real ainda não foi validada. Consulte [a auditoria atual](revisao-frontend.md).
-
-## Recursos que ainda exigem backend
-
-- Autenticação e autorização de clientes, guincheiros e funcionários.
-- Upload privado, análise e aprovação de documentos.
-- Propostas, contrapropostas, mudanças de status, disponibilidade e avaliações.
-- Chat, notificações, geocodificação, rotas e estimativas de chegada.
-- Retornar o ID persistido nos POSTs. No registro de solicitação, tratar falhas posteriores à persistência sem induzir duplicidade (o serviço gera um relatório após salvar).
-
-Essas rotas não existem nos controllers atuais. As telas de acesso informam a limitação; o modo API não simula autenticação nem usa as operações provisórias de `platformService.ts`.
-
-## Publicação do frontend
-
-O build usa `.env.production` com o modo API e a URL da Render. Se o provedor já tiver variáveis definidas, alinhe `VITE_APP_MODE=api` e `VITE_API_BASE_URL=https://guincho-save-lives-backend.onrender.com` e gere um novo build. Variáveis `VITE_` são incorporadas ao JavaScript público; não coloque segredos nelas.
-
-O `vercel.json` mantém fallback das rotas SPA. A [Vercel pública](https://gincho-save-lives.vercel.app/) foi verificada em 15/11/2026, com produção READY no commit `11984ee`. Vídeo e confirmação das funções dos integrantes ainda dependem da equipe. O contato público agora é o GitHub Issues, indicado no README e na página Contato.
-
-O comando `npm run check:api` consulta as duas rotas por Fetch, verifica HTTP/array/CORS e retorna código de saída 1 em caso de falha, sem exibir dados dos registros. Executado nesta correção de frontend, confirmou HTTP 500 em ambos os GETs e CORS aceitando a Vercel. Não realiza POST nem substitui a validação de persistência depois da correção do servidor.
+O pacote Java é de substituição de arquivos para o repositório separado, não um deploy já realizado nem uma implementação completa da rubrica DDD. A conexão disponível tem apenas leitura nesse repositório. Depois da aplicação, validar PIN incorreto, limite de tentativas, sessão, consulta autorizada, expiração, logout e os dois cadastros públicos, somente com dados fictícios.

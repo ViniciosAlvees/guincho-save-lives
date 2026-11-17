@@ -3,6 +3,15 @@ dist/
 .env
 .env.local
 .env.*.local
+.env.*
+!.env.example
+!.env.production
+*.pem
+*.key
+*.p12
+*.pfx
+wallet/
+Wallet_*/
 coverage/
 *.log
 .DS_Store
