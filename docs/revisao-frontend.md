@@ -1,108 +1,81 @@
-# Auditoria de requisitos e penalidades — 15/11/2026
+# Auditoria de requisitos e penalidades - 17/11/2026
 
-## Escopo e fonte
+## Fonte e alcance
 
-Conferência do frontend Guincho Save Lives com o PDF oficial `1TDS Fevereiro - Global Solution 2026-2.pdf`, localizado em Downloads. Foram lidas as páginas 1–17 (regras gerais e CitizenTech) e 58–74 (Front-End Design Engineering). As penalidades abaixo são as da página 73. Esta auditoria não certifica as entregas das outras cinco disciplinas.
+PDF oficial `1TDS Fevereiro - Global Solution 2026-2.pdf`, 100 páginas: regras gerais nas páginas 1-17, Front-End Design Engineering nas páginas 58-74 e penalidades na página 73. A tabela de penalidades e as resoluções foram conferidas também por renderização visual do PDF. Horários de referência: America/Sao_Paulo.
 
-Evidências: código local da branch `Vinicios`, testes executados nesta revisão, GitHub conectado, dados de deploy da Vercel, HTTP público, Chrome headless e arquivo ZIP extraído em pasta limpa. Horários e datas referem-se a America/Sao_Paulo.
+Esta revisão cobre o repositório do frontend, a publicação Vercel, o contrato e as chamadas da API Java, além das correções de segurança solicitadas. As outras disciplinas têm entregas próprias: veja [limites e pendências das demais disciplinas](outras-disciplinas.md). Não se atribui nota nem se certifica autoria ou submissão pelo Portal.
 
-## Resultado
+**Resultado: os requisitos técnicos principais do frontend estão implementados e foram testados, mas a entrega ainda tem pendências.** Faltam os links dos vídeos, participação dos demais integrantes no histórico final e aplicação das correções de segurança no backend. A API teve uma resposta HTTP 500 intermitente, cuja causa precisa de logs do Render. O acesso de funcionários está implementado e testado com contrato controlado; permanece fechado na API publicada até o responsável instalar a correção Java e configurar o PIN.
 
-**A entrega ainda não atende a todos os requisitos.** A base técnica, as páginas e a publicação foram verificadas, mas a API Java retorna HTTP 500, o histórico publicado não atende à participação exigida e o vídeo ainda será produzido pela equipe. Os colegas realizarão seus próprios commits, conforme informado pelo usuário. Contato público, conteúdo CitizenTech/ODS e ajuste de layout foram corrigidos localmente. Não é possível garantir ausência de descontos ou nota zero por questões que dependem da submissão, autoria e apresentação.
+## Evidências atuais
 
-O usuário delimitou o trabalho ao frontend e à integração HTTP. Nenhum código Java foi alterado ou incluído nesta entrega. A correção do servidor é responsabilidade do integrante do backend.
+- GitHub público: `ViniciosAlvees/guincho-save-lives`, `main` em `abca0a5c55b6e3b2f88356957c4f36aeca38825a` na consulta. Foram encontrados 16 commits, incluindo cinco merges, todos associados a Vinicios. Esta revisão foi organizada em seis commits locais na branch `bryan`, com a autoria configurada pelo usuário, sem atribuir commits a colegas. Envio/integração no histórico remoto não se presume a partir de commits locais.
+- Vercel: projeto `gincho-save-lives`, framework Vite, produção `READY`, commit `abca0a5`, origem Git conectada ao repositório correto, URL `https://gincho-save-lives.vercel.app/`. Não houve erro de alias. A consulta de logs de runtime nos 30 minutos anteriores não encontrou registros de erro; uma SPA estática não envia automaticamente suas exceções de navegador a esses logs.
+- Navegador na produção original: dez rotas em 390x844, 768x1024 e 1440x900, total de 30 acessos HTTP 200, navegação mobile e imagens da equipe verificadas. Em uma primeira navegação houve HTTP 500 da API no perfil, após a busca ter respondido 200. Na rodada seguinte, as consultas carregaram dados nas três resoluções.
+- Antes das mudanças de Menu/Pitch/funcionários, foram feitos outros 30 acessos locais e testes de escrita. Guincheiro fictício recebeu HTTP 201 e foi encontrado com ID 8; solicitação fictícia recebeu HTTP 201 e foi encontrada com ID 6. As respostas dos POSTs tiveram ID nulo; a consulta posterior confirmou a persistência. Esses registros são explicitamente de teste, sem atendimento real.
+- Versão final local com os cabeçalhos da Vercel: 12 rotas em três resoluções, 36 verificações, sem rolagem horizontal medida, imagens quebradas ou exceções JavaScript. Dois eventos `ERR_NETWORK_IO_SUSPENDED` foram registrados na rodada; não foram ocultados do relatório. Isso impede afirmar ausência absoluta de falhas de transporte.
+- Animação: movimento do guincho confirmado por mudança de transformação entre quadros; pausa e retomada verificadas; parallax continua após mover o ponteiro. Movimento reduzido respeitado por padrão, com reprodução mediante ação explícita. Frase indicada pelo usuário removida. Botão da cena reposicionado no celular para não sobrepor o texto.
+- Menu: abre nas três resoluções, fica dentro da tela, contém Pitch/Funcionários, fecha após navegar e por Escape, devolvendo foco ao botão. Navegação entre páginas volta ao topo, preservando âncoras válidas.
+- Formulários públicos: campos vazios impediram POST nas três resoluções. Estados de lista vazia, falha de rede e nova tentativa foram verificados. Não há fallback de API para dados fictícios.
+- Funcionários: formato do PIN validado, falhas HTTP não liberam acesso, token exige formato e expiração válidos, painel redireciona sem sessão, sessão desaparece ao recarregar, logout chama a API. Testes de fluxo usaram respostas controladas; **não equivalem a autenticação remota já disponível**.
+- Código: 55 testes TypeScript/Vitest aprovados, ESLint e build aprovados. Backend de suporte: 12 testes Java aprovados, sendo oito novos de segurança, em cópia temporária sem acesso ao Oracle.
+- Pacote de entrega: 97 arquivos, aproximadamente 3,72 MB, manifesto SHA256 e exclusões conferidos; extraído em pasta limpa, com `npm ci --offline --ignore-scripts` e `npm run build` aprovados. Os guards rejeitaram uma variável de senha com prefixo público e uma URL com credenciais, usando apenas sentinelas fictícios.
+- Segurança: nenhum dos literais de conexão/usuário/senha encontrados no backend original aparece no bundle JavaScript do frontend; nenhum PIN foi configurado no frontend; build sem arquivos `.map`. `npm audit --omit=dev` retornou zero vulnerabilidades conhecidas. A auditoria completa ainda aponta 11 avisos altos na cadeia de ferramentas locais ligada a `picomatch`, sem versão corrigida publicada no registro consultado. Não foi feito downgrade forçado do Vite.
 
-### Evidências atuais
+Evidências resumidas em [auditoria técnica](evidencias/auditoria-tecnica-2026-11-17.json), [verificação inicial](evidencias/navegador-integracao-2026-11-17.json) e [verificação final](evidencias/frontend-final-2026-11-17.json). A auditoria antiga está preservada como [registro histórico de 15/11](evidencias/auditoria-2026-11-15.md).
 
-- [GitHub público](https://github.com/ViniciosAlvees/guincho-save-lives): branch padrão `main`, commit `11984eeb9ace08128def4841b499771c154d6ec2` na consulta. O endereço antigo `gincho-save-lives` redireciona ao repositório renomeado.
-- [Vercel](https://gincho-save-lives.vercel.app/): produção `READY`, commit `11984ee`, branch `main`. O bundle público `index-CHyD361d.js` correspondia ao build da integração antes dos ajustes desta auditoria. Portanto, os dois commits da integração já chegaram ao GitHub e à produção por merge; não estão apenas locais.
-- Navegador: nove páginas em três resoluções, **27 acessos com HTTP 200 e título de página renderizado**, sem exceções JavaScript. Registro em [evidências do navegador](evidencias/navegador-publicado-2026-11-15.json).
-- Mobile/tablet: o menu abriu, navegou para Integrantes e fechou. As cinco fotos carregaram nas três resoluções após verificar também o carregamento tardio.
-- Formulários de solicitação e guincheiro: envio vazio impedido pelo navegador, respectivamente quatro e três campos inválidos, sem POST enviado.
-- API: em aproximadamente 21h45, `GET /guincheiros` retornou HTTP 500 com `Access-Control-Allow-Origin: https://gincho-save-lives.vercel.app`. O mesmo HTTP 500 foi observado pelo Chrome nas telas da solução. CORS aceitou a origem; o erro interno continua. A consulta anterior a `/solicitacoes` também retornou 500; não houve nova escrita em produção nesta auditoria.
-- Código: **29 testes aprovados**, incluindo 19 testes do cliente HTTP com respostas controladas; ESLint e build TypeScript/Vite aprovados.
-- Pacote de conferência do commit `a09aff1`: **3.733.807 bytes**, 77 entradas incluindo diretórios, sem `node_modules` ou `.git`, com `identificacao.txt`, lockfile e configuração pública de API. Foi extraído em pasta limpa; `npm ci --offline --no-audit --no-fund`, `npm run build` e `npm run dev -- --port 5180` funcionaram. O npm usou seu cache local. Esse pacote é uma amostra auditada, não uma confirmação do ZIP que será anexado ao Portal.
+## Matriz da rubrica de Front-End
 
-## Matriz detalhada do frontend
+Os pesos abaixo são os do PDF; não representam nota concedida.
 
-Os pontos identificam o peso oficial de cada grupo de critérios; não representam uma nota atribuída nesta revisão.
-
-| Critério do PDF | Peso | Verificação e situação |
+| Critério | Peso | Situação e evidência |
 |---|---:|---|
-| Construção do projeto, p. 64 | 10 | **Comprovado:** React/Vite e scripts; código TS/TSX; pastas de componentes, páginas, serviços e tipos; interfaces nas props/estados/respostas; instalação limpa, build e início do servidor. |
-| Componentização, páginas e rotas, p. 65 | 10 | **Comprovado:** `PageHero` e `Notice` reaproveitados; responsabilidades separadas; Home, Integrantes, Sobre, FAQ e Contato; busca, solicitação e cadastro profissional como páginas da solução; rotas estáticas e `/guincheiros/:id`; links do menu mobile e acesso direto remoto renderizados. O conteúdo do perfil com um ID existente depende do GET atualmente em erro. |
-| Tailwind e responsividade, p. 66 | 8 | **Parcial:** Tailwind configurado e classes utilitárias aplicadas; 390×844, 768×1024 e 1440×900 renderizadas sem rolagem horizontal. A revisão visual encontrou o radar decorativo atrás do texto no tablet; corrigido localmente nesta revisão, ainda sem publicação. A ilustração do caminhão estende-se no recorte decorativo da Home mobile, sem ampliar o documento nem cortar controles. Não se deve usar apenas a métrica de largura como prova de ausência de sobreposição. |
-| API Java, p. 67 | 18 | **Parcial:** URL remota e README, serviços organizados, tipos e estados de carregamento/erro/vazio existem; erro real apareceu na interface. **Não comprovado:** GET bem-sucedido exibindo registros reais e escrita persistida. Backend retorna 500. Mocks dos testes e modo demo não satisfazem esses dois itens. |
-| Formulários e UX, p. 68 | 7 | **Parcial:** formulários de solicitação e profissional identificados, com validação, bloqueio de envio vazio e mensagens; usabilidade examinada nos três tamanhos. Erro remoto visível. **Sucesso de operação real ainda não validado**, pois depende de corrigir a API. Contato agora direciona ao canal público real de GitHub Issues, sem formulário que apenas simulava comunicação. |
-| Vercel, p. 69 | 7 | **Parcial:** publicação pública, carregamento React e acesso direto às rotas comprovados; link incluído no README local durante a auditoria. Integração em produção continua falhando na API. O README publicado e o ajuste visual precisam receber as alterações locais desta revisão. |
-| GitHub, README e vídeo, p. 70 | 10 | **Parcial:** repositório público, título, objetivo, tecnologias, pastas, integrantes, comandos e links GitHub/API/Vercel/contato presentes no README local. **Faltam:** participação dos integrantes nos commits, mínimo total na `main` e URL do vídeo YouTube de até 3 minutos. O usuário informou que colegas aplicarão seus commits e o vídeo ainda não está pronto. Funções dos integrantes estão pendentes de confirmação, sem atribuições inventadas. |
-| Apresentação presencial, p. 71 | 30 | **Pendente de realização:** problema/contexto; explicação da solução; navegação; demonstração nas três resoluções; menu/interações/formulário; domínio de HTML/CSS/JavaScript; participação oral efetiva de todos; respostas ao professor. O slide repete um rótulo de domínio técnico; preservar os itens do professor sem inventar critérios adicionais. Código ou testes não comprovam apresentação. |
+| Construção do projeto, p. 64 | 10 | React + Vite + TypeScript, scripts, pastas e tipagem presentes. Instalação, testes e build conferidos. Node 22.12+, 24 ou 26 por causa da atualização de segurança do Vitest. |
+| Componentização, páginas e rotas, p. 65 | 10 | `PageHero` e `Notice` reutilizados. Cinco institucionais, busca, cadastro, solicitação e perfil com parâmetro. Pitch e funcionários acrescentados. Menus e acesso direto testados; painel protegido redireciona sem sessão. |
+| Tailwind e responsividade, p. 66 | 8 | Tailwind configurado; mobile 390x844, tablet 768x1024 e desktop 1440x900. Menu e controles corrigidos após medidas e inspeção visual. Sem rolagem horizontal indevida nos casos testados. |
+| API Java, p. 67 | 18 | GET real mostrado na interface; POSTs reais com persistência confirmada; serviços Fetch, tipos e estados. Houve HTTP 500 intermitente: estabilidade depende do servidor. Segurança e autenticação novas aguardam aplicação do pacote Java. |
+| Formulários e UX, p. 68 | 7 | Campos identificados, obrigatoriedade, formato, carregamento, erro e sucesso verificados. Não repete POST automaticamente quando a escrita pode ter ocorrido. |
+| Vercel, p. 69 | 7 | URL pública, projeto/repositório corretos e produção READY conferidos. Rotas da versão publicada testadas. Novas alterações locais só aparecem após publicação; não confundir a produção original com a revisão local. |
+| GitHub, README e vídeo, p. 70 | 10 | Repositório público e documentação atualizados. Total remoto de 16 commits atende numericamente ao mínimo de 15, incluindo merges. **Falta comprovar cinco por cada integrante no histórico final.** URL do vídeo frontend até três minutos ainda ausente. |
+| Apresentação presencial, p. 71 | 30 | Depende da equipe, entre 23 e 27/11. Todos precisam participar oralmente, explicar decisões e responder às perguntas. Código e testes não comprovam a apresentação. |
 
-### Páginas verificadas no navegador
+O slide 71 repete o rótulo de domínio técnico; esta auditoria não cria um critério adicional para corrigir a redação do professor. O limite do vídeo frontend é **três minutos**, distinto dos cinco minutos do pitch de Software Engineering e do vídeo Java.
 
-`/`, `/integrantes`, `/sobre`, `/faq`, `/contato`, `/buscar-guincho`, `/guincheiros/1`, `/solicitar-guincho` e `/cadastro/guincheiro`. Na busca e no perfil, verificou-se a apresentação do erro real da API; não se afirma que registros de profissionais foram carregados.
+## Penalidades oficiais de Front-End - página 73
 
-### Histórico Git — requisito não atendido
-
-A API do GitHub retornou **12 commits alcançáveis na `main`**, todos associados ao mesmo e-mail e usuário ViniciosAlvees. A branch `Vinicios` local tem oito commits. Referências auxiliares e checkpoints locais não foram usados para aumentar a contagem da entrega.
-
-| Integrante | Participação comprovada no histórico final consultado |
-|---|---|
-| Vinicios Alves | 12 commits na `main`, incluindo merges; atende ao mínimo individual numérico |
-| Raphael Ferreira Tavares | Nenhum commit identificado como autoria dele |
-| Bryan Germano | Nenhum commit identificado como autoria dele |
-| Enzo Macedo | Nenhum commit identificado como autoria dele |
-| Victor Hugo Velasco Guzman | Nenhum commit identificado como autoria dele |
-
-O PDF exige pelo menos 15 commits no total e cinco por integrante. Com cinco pessoas, cumprir a participação individual exige pelo menos 25 commits autênticos. Cada integrante deve realizar e explicar suas próprias alterações. Não basta aumentar o total por um único autor nem atribuir autoria que não corresponde ao trabalho realizado.
-
-## Penalidades específicas — página 73
-
-| Item | Penalidade oficial | Evidência e limite da conclusão |
+| Item | Penalidade | Conferência |
 |---|---|---|
-| 01 — ZIP maior que 50 MB | −2 pontos | **Não ocorre na amostra auditada:** 3,73 MB. Medir novamente o arquivo exato que será enviado. |
-| 02 — `node_modules` incluída | −3 pontos | **Não ocorre na amostra:** nenhuma entrada dessa pasta. Ter `node_modules` na máquina é normal; o risco é compactar a pasta do projeto inteira. |
-| 03 — arquivos essenciais ausentes | −10 pontos | **Não identificado na amostra:** extração, instalação limpa, build e início de servidor aprovados; código, assets, lockfile e configurações presentes. Revalidar se o ZIP final for montado de outra forma. |
-| 04 — Axios/outra biblioteca substituindo Fetch | −10 pontos | **Não identificado:** dependências diretas não incluem biblioteca HTTP substituta e o código de serviços usa Fetch. Leaflet, React Router e ícones não substituem a camada HTTP exigida. |
-| 05 — entrega sem ZIP no Portal | Nota zero | **Depende da submissão:** o representante deve anexar o arquivo na área da disciplina. GitHub, Vercel, e-mail ou Teams não substituem esse envio. Nenhuma submissão foi feita nesta auditoria. |
-| 06 — template pronto como base substancial | Nota zero | Nenhum template pronto foi identificado na inspeção. A origem integral e o domínio do código precisam ser sustentados pela equipe; análise técnica local não certifica autoria. |
-| 07 — tecnologia proibida substituindo React/Vite | Nota zero | **Não identificado:** implementação em React + Vite + TypeScript; sem Angular, Vue, Next.js ou Create React App como base da aplicação. |
-| 08 — incompatibilidade com a proposta | Nota zero | A solução se relaciona a mobilidade e acesso a serviços. Beneficiários, ecossistema, metas ODS e plano de medição de impacto foram detalhados em Sobre e no README. A contribuição aos ODS é apresentada como proposta parcial, sem inventar resultados ou parcerias; não é uma garantia prévia de avaliação. |
-| 09 — plágio/trabalho substancialmente idêntico | Nota zero + ocorrência | **Não certificável por esta auditoria.** Há créditos de fotos/dados dos integrantes e uso de IA no README. O grupo deve revisar, compreender e defender o trabalho; IA permitida não dispensa domínio do conteúdo. |
+| 01. ZIP acima de 50 MB | -2 pontos | Empacotador exige até 50.000.000 bytes, gera manifesto e reabre o ZIP para comparar hashes. Medir o pacote exato da entrega. |
+| 02. `node_modules` no ZIP | -3 pontos | Excluída por lista explícita e validação. Dependências instaladas na máquina não entram na entrega. |
+| 03. Arquivos essenciais ausentes | -10 pontos | Fontes, assets, configurações, lockfile e identificação incluídos. Instalação/build do pacote extraído precisam continuar válidos após qualquer alteração posterior. |
+| 04. Biblioteca HTTP substituindo Fetch | -10 pontos | Serviços do frontend usam Fetch. Nenhum Axios ou substituto foi introduzido. Bibliotecas de teste/compactação não substituem Fetch na aplicação. |
+| 05. Falta de ZIP no Portal | Nota zero | Não verificável por código. Somente o representante deve anexar o ZIP na área da disciplina; link de GitHub/Vercel não substitui o envio. |
+| 06. Template pronto como base substancial | Nota zero | Nenhum template foi identificado na inspeção. A equipe precisa sustentar a origem e o domínio do trabalho. |
+| 07. Tecnologia proibida substituindo React/Vite | Nota zero | Aplicação permanece React + Vite + TypeScript. Os arquivos Java em `support` são correção separada para o backend, sem substituir a SPA ou entrar em seu build. |
+| 08. Incompatibilidade com a proposta | Nota zero | CitizenTech, beneficiários, problema, funcionamento, ecossistema, metas ODS e plano de medição presentes. Pesquisa e impacto não são apresentados como já realizados. |
+| 09. Plágio/trabalho substancialmente idêntico | Nota zero + ocorrência | Não é possível certificar originalidade global por inspeção local. Créditos e uso de IA declarados; revisão e explicação pela equipe continuam obrigatórias. |
 
-API, vídeo, commits e apresentação também impactam os critérios da rubrica. Não há base para transformar automaticamente cada pendência em uma penalidade adicional de nota zero, nem para prometer uma nota final.
+Pendências de API, vídeo, histórico e apresentação afetam a rubrica; não se inventam penalidades adicionais de nota zero para cada uma delas.
 
-## Regras gerais e conteúdo CitizenTech
+## Regras gerais e pendências da equipe
 
-| Requisito geral | Situação |
-|---|---|
-| Até cinco integrantes | Cinco pessoas listadas no código, README e `identificacao.txt`. |
-| Cadastro do grupo até 13/11 | Não verificável pelo repositório. Prazo já passou; confirmar o comprovante com o representante, pois grupo não cadastrado pode não aparecer no Portal. |
-| TXT em cada ZIP com RM, nome completo e turma | Arquivo presente na amostra e com os três campos por integrante. A própria identificação pede conferência dos nomes completos; confirmar especialmente abreviações antes de entregar. |
-| CitizenTech: beneficiário, problema, funcionamento, tecnologias, ecossistema e impacto | Conteúdo incluído em Sobre e README: motoristas/famílias e pequenos prestadores; funcionamento; participantes do ecossistema; quatro indicadores e métodos de coleta. Pesquisa e impacto ainda não realizados, claramente identificados como plano. |
-| ODS e contribuição para metas | Sobre e README explicam a relação parcial com a meta 9.3 (integração de pequenos negócios ao mercado) e indireta com a 11.2 (mobilidade/segurança), com links às fontes oficiais da ONU e limites da contribuição. Não são alegados resultados nem mudanças nos indicadores oficiais. |
-| IA generativa | Uso de Codex/ImageGen declarado no README com finalidade e créditos. Entregar sem revisar ou sem compreender o código contraria a orientação geral da página 17. |
-| Prazo e canal | Representante deve anexar um ZIP até **19/11/2026, 23h55**, no Portal do Aluno. Não houve acesso/submissão no Portal nesta revisão. |
-| Apresentações | **23 a 27/11/2026**, na aula da disciplina, com participação efetiva dos integrantes. Confirmar escala e materiais com o professor. |
+- Cinco integrantes listados, dentro do limite do PDF. `identificacao.txt` contém nome, RM e turma de cada pessoa. Conferir os nomes completos, especialmente os atualmente abreviados, antes de entregar.
+- O cadastro do grupo deveria ter sido feito até 13/11. Conferir o comprovante com o representante; o repositório não prova esse cadastro.
+- Entrega de Front-End: um ZIP no Portal até **19/11/2026, 23h55**. Apresentações: **23 a 27/11/2026**, conforme a escala do professor. Nenhuma submissão foi realizada nesta revisão.
+- Cada integrante deve produzir e explicar seus próprios cinco commits. Com cinco integrantes, isso implica pelo menos 25 commits autênticos. Commits desta revisão não são atribuídos a colegas para simular participação.
+- Enviar os links reais do YouTube para preencher o README e `src/data/pitch.ts`. A página Pitch preparada não substitui o vídeo.
+- Responsável pelo backend: trocar a credencial exposta, aplicar [a correção Java](../support/backend-security/README.md), configurar o PIN e publicar. Não inserir essas credenciais no frontend nem neste relatório.
+- Estabilizar o HTTP 500 observado e testar a autenticação no Render após a publicação. Verificar também as entregas específicas de Java, banco, IA, Python e Software Engineering.
 
-## Correções locais feitas nesta revisão
+## Correções desta revisão
 
-1. README passou a conter a URL da Vercel fornecida, o nome atual do repositório público e o estado real da publicação.
-2. Radar decorativo de `PageHero` ocultado também no tablet, evitando disputar o espaço do texto. Build aprovado; verificação visual local documentada após a alteração. A produção examinada ainda contém o CSS anterior.
-3. Matriz e roteiro de vídeo atualizados para não recomendar demonstrar mocks como substitutos da API real.
-4. Sobre detalha cidadãos beneficiados, ecossistema, metas ODS e plano de avaliação; Home no modo API passou a anunciar somente os recursos disponíveis.
-5. Contato passou a apontar ao GitHub Issues do projeto, que está habilitado; não foram inventados e-mail, telefone ou prazo de resposta.
-6. Scripts `check:api` e `package:delivery` incluídos: diagnóstico GET sem dados pessoais e geração de ZIP por lista explícita, com limite de tamanho, validação de conteúdo e manifesto SHA256.
+1. Animação recuperada com pausa/retomada e correção do listener de rolagem; mensagem pedida removida.
+2. Menu único, responsivo e acessível; novas páginas Pitch e Funcionários.
+3. Sessão de funcionários somente em memória, dependente de confirmação da API, com expiração/logout e nenhum PIN fixo.
+4. CSP e cabeçalhos de segurança preparados; source maps desabilitados; bloqueio de variáveis públicas indevidas e URLs com credenciais; servidores locais restritos a 127.0.0.1.
+5. Ferramentas vulneráveis atualizadas; dependências de build separadas das usadas em produção; auditoria residual documentada.
+6. Correção Java de credenciais, erros e autenticação preparada e testada, sem acesso de escrita ao backend remoto.
+7. Diagnóstico passou a detectar a listagem indevidamente pública de pedidos; empacotadores conferem conteúdo, hashes e configuração pública.
 
-A verificação final local das páginas está registrada em [evidências finais](evidencias/validacao-final-local-2026-11-15.json). O pacote atualizado pode ser reproduzido com `npm run package:delivery`; é necessário regenerá-lo após vídeo e contribuições do grupo. A dependência de compactação `fflate` é usada somente no empacotador e não substitui Fetch nas requisições HTTP.
-
-As alterações desta revisão foram organizadas em commits locais na branch `Vinicios`. Ainda precisam ser revisadas e publicadas. Não houve push, merge, deploy ou submissão no Portal nesta etapa.
-
-## Ordem prática para concluir a entrega
-
-1. O responsável pelo backend deve corrigir o HTTP 500. Depois, o frontend deve repetir `npm run check:api` e demonstrar GET exibindo dados e um POST persistido, confirmado por consulta posterior.
-2. Cada integrante realizar suas contribuições e commits autênticos; consolidar a versão final no GitHub público.
-3. Revisar as alterações locais desta auditoria e publicar a versão final na Vercel; repetir o teste das rotas e da integração.
-4. Gravar vídeo público/não listado no YouTube, de até três minutos, mostrando a aplicação e a API real. Inserir a URL no README; o canal de contato público já está indicado.
-5. Revisar e compreender a explicação CitizenTech/ODS incluída, confirmar nomes/cadastro do grupo e preparar a apresentação.
-6. Montar o ZIP final sem `node_modules`, conferir tamanho/arquivos, extrair em pasta limpa e executar os comandos. O representante deve anexar esse arquivo no Portal dentro do prazo.
+Nenhuma dessas verificações garante uma nota final ou substitui os itens acadêmicos e operacionais pendentes.

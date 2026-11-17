@@ -1,0 +1,39 @@
+{
+  "date": "2026-11-17",
+  "timezone": "America/Sao_Paulo",
+  "frontendTests": 55,
+  "backendSupportTests": 12,
+  "backendSupportAppliedRemotely": false,
+  "remoteBackendWritePermission": false,
+  "productionAudit": {
+    "state": "READY",
+    "commit": "abca0a5c55b6e3b2f88356957c4f36aeca38825a",
+    "repository": "ViniciosAlvees/guincho-save-lives",
+    "routes": 30
+  },
+  "localFinalRoutes": 36,
+  "api": {
+    "get": 200,
+    "post": 201,
+    "persistedProfessionalId": "8",
+    "persistedRequestId": "6",
+    "intermittent500Observed": true,
+    "anonymousRequestsEndpointStillPublic": true
+  },
+  "dependencies": {
+    "productionKnownVulnerabilities": 0,
+    "developmentHigh": 11,
+    "developmentCritical": 0
+  },
+  "videos": {
+    "pitch": null,
+    "frontend": null
+  },
+  "remoteCommitsBeforeRevision": 16,
+  "remoteAuthorsBeforeRevision": 1,
+  "cleanZipInstallAndBuild": true,
+  "publicConfigurationGuardsVerified": true,
+  "localRevisionCommits": 6,
+  "localRevisionBranch": "bryan",
+  "remoteRevisionPublished": false
+}
