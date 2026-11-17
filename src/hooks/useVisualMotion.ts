@@ -60,8 +60,6 @@ export function useVisualMotion() {
       lastCard = card
       lastButton = button
       cancelAnimationFrame(frame)
-      cancelAnimationFrame(scrollFrame)
-      window.removeEventListener('scroll', onScroll)
       frame = requestAnimationFrame(() => {
         if (card) {
           const rect = card.getBoundingClientRect()
@@ -86,6 +84,9 @@ export function useVisualMotion() {
     document.addEventListener('pointerout', onPointerOut, { passive: true })
     return () => {
       cancelAnimationFrame(frame)
+      cancelAnimationFrame(scrollFrame)
+      window.removeEventListener('scroll', onScroll)
+      scene?.style.removeProperty('--parallax')
       revealObserver.disconnect()
       mutationObserver.disconnect()
       document.removeEventListener('pointermove', onPointerMove)
