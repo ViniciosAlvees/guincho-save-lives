@@ -1,0 +1,30 @@
+package br.com.fiap.guincho.controller;
+
+import br.com.fiap.guincho.dominio.Guincheiro;
+import br.com.fiap.guincho.service.GuincheiroService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import java.util.ArrayList;
+
+@RestController
+@RequestMapping("/guincheiros")
+public class GuincheiroController {
+
+    private final GuincheiroService guincheiroService;
+
+    public GuincheiroController(GuincheiroService guincheiroService) {
+        this.guincheiroService = guincheiroService;
+    }
+
+    @PostMapping
+    public ResponseEntity<Object> salvar(@RequestBody Guincheiro guincheiro) {
+        guincheiroService.adicionar(guincheiro);
+        return ResponseEntity.status(HttpStatus.CREATED).body(guincheiro);
+    }
+
+    @GetMapping
+    public ResponseEntity<ArrayList<Guincheiro>> obterTodosGuincheiros() {
+        return ResponseEntity.ok(guincheiroService.obterTodosGuincheiros());
+    }
+}
