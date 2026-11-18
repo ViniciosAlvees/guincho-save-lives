@@ -1,6 +1,8 @@
 # Contrato da API Java
 
-Base: `https://guincho-save-lives-backend.onrender.com`, configurável por `VITE_API_BASE_URL`. Fonte: [backend Java](https://github.com/velascoguzmanvictorhugo-ui/guincho-save-lives-backend), commit `45c50e18f5ab37c6ea69a5ce1377d35a05fec357`, conferido em 17/11/2026.
+A estimativa de preço utiliza uma segunda API, descrita no [contrato Python](contrato-api-python.md). As consultas e cadastros abaixo continuam usando o Java por padrão.
+
+Base: `https://guincho-save-lives-backend.onrender.com`, configurável por `VITE_API_BASE_URL`. Fonte: [backend Java](https://github.com/velascoguzmanvictorhugo-ui/guincho-save-lives-backend), revisado no commit `dde8c4766553e2b379285adff5b3e529d54062df` em 18/11/2026. Veja a [revisão completa, incluindo escrita real](verificacao-apis-2026-11-18.md).
 
 **Segurança:** a listagem publicada de solicitações ainda é anônima. A correção preparada em [support/backend-security](../support/backend-security/README.md) passa a exigir sessão nessa rota e adiciona `/funcionarios/sessao` e `/funcionarios/solicitacoes`. Essas mudanças ainda não foram aplicadas no Render. Não colocar o PIN ou as credenciais do banco no frontend.
 
@@ -9,7 +11,7 @@ Base: `https://guincho-save-lives-backend.onrender.com`, configurável por `VITE
 | GET | `/guincheiros` | Array JSON de guincheiros |
 | POST | `/guincheiros` | Cadastro; HTTP 201 com objeto enviado |
 | GET | `/solicitacoes` | Array JSON de solicitações |
-| POST | `/solicitacoes` | Cadastro; HTTP 201 com objeto enviado e endereço quando consultado |
+| POST | `/solicitacoes` | Contrato previsto: HTTP 201 com objeto enviado; atualmente retorna HTTP 500 |
 
 ## Guincheiro
 
@@ -40,7 +42,7 @@ O POST envia apenas `name`, `region`, `city`, `towType` e `price`. O ID da lista
 }
 ```
 
-O POST envia os campos acima, exceto `id`. CEP opcional: remover máscara e enviar `null` se vazio. CEP informado aciona consulta de endereço no serviço Java. Não há vínculo com um profissional, status de atendimento, descrição separada do veículo, detalhes adicionais, propostas ou mensagens nesse modelo.
+O POST do frontend envia os campos acima, exceto `id`. CEP opcional: remover máscara e enviar `null` se vazio. A fonte atual do serviço Java salva o CEP sem chamar o `CorreioImpl`. O domínio Java passou a aceitar também `clienteId` opcional, não preenchido pelo fluxo atual do frontend. Não há vínculo com um profissional, status de atendimento, descrição separada do veículo, detalhes adicionais, propostas ou mensagens nesse modelo.
 
 As anotações `@JsonProperty` usam nomes em inglês; os getters do domínio também podem expor nomes portugueses. O cliente aceita `nome`, `regiao`, `cidade`, `tipoGuincho`, `preco`, `nomeCliente`, `origem`, `destino`, `veiculo` e `problema` como aliases de leitura, enviando somente os nomes declarados nas anotações.
 
@@ -58,4 +60,6 @@ Cliente e tipos: `src/services/apiClient.ts` e `src/services/towService.ts`. Tip
 
 ## Verificação
 
-Em 17/11/2026 os GETs responderam 200 e os POSTs de guincheiro e solicitação fictícios responderam 201, com persistência confirmada por consulta posterior. Houve também um HTTP 500 intermitente no navegador; não se afirma estabilidade absoluta do serviço. Os 55 testes do frontend incluem contrato controlado e autenticação; o pacote Java separado passou em 12 testes. Consulte [diagnóstico e pendências](integracao-pendente.md).
+Na verificação anterior de 17/11/2026 os GETs responderam 200 e os POSTs de guincheiro e solicitação fictícios responderam 201, com persistência confirmada por consulta posterior. Houve também um HTTP 500 intermitente no navegador; não se afirma estabilidade absoluta do serviço. Os 55 testes do frontend incluem contrato controlado e autenticação; o pacote Java separado passou em 12 testes. Consulte [diagnóstico e pendências](integracao-pendente.md).
+
+Testes automatizados usam respostas controladas do contrato acima. Na revisão de 18/11/2026, guincheiros e clientes responderam HTTP 200. Um guincheiro fictício criado via Python foi recuperado no Java com ID `11`, confirmando persistência. GET e POST de solicitações retornaram HTTP 500; o POST identificou `ORA-00904: "NOME_CLIENTE": invalid identifier`. A gravação de solicitações não foi confirmada. Os preflights Java aceitaram a origem Vercel. Consulte a [revisão completa](verificacao-apis-2026-11-18.md).

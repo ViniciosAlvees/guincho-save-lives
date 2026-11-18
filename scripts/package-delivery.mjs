@@ -20,7 +20,7 @@ async function addFile(path) {
   const bytes = await readFile(path)
   if (['.env.example', '.env.production'].includes(name)) {
     const keys = bytes.toString('utf8').split(/\r?\n/).map(line => line.trim()).filter(line => line && !line.startsWith('#')).map(line => line.split('=')[0].trim())
-    if (keys.some(key => !['VITE_APP_MODE', 'VITE_API_BASE_URL'].includes(key))) throw new Error(`Configuração pública não autorizada em ${name}.`)
+    if (keys.some(key => !['VITE_APP_MODE', 'VITE_API_BASE_URL', 'VITE_PYTHON_API_BASE_URL'].includes(key))) throw new Error(`Configuração pública não autorizada em ${name}.`)
   }
   files[name] = new Uint8Array(bytes)
 }

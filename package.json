@@ -13,7 +13,8 @@
     "test": "vitest run",
     "package:delivery": "node scripts/package-delivery.mjs",
     "package:backend-security": "node scripts/package-backend-security.mjs",
-    "check:api": "node scripts/check-api.mjs"
+    "check:api": "node scripts/check-api.mjs",
+    "check:python": "node scripts/check-python.mjs"
   },
   "dependencies": {
     "leaflet": "^1.9.4",

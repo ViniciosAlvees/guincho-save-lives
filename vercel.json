@@ -1,5 +1,8 @@
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }],
+  "rewrites": [
+    { "source": "/api/python/:path*", "destination": "https://python-guincho-save.vercel.app/:path*" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ],
   "headers": [{
     "source": "/(.*)",
     "headers": [

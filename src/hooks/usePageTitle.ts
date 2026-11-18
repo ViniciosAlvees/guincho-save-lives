@@ -8,6 +8,7 @@ const titles: Record<string, string> = {
   '/login/cliente': 'Login do cliente', '/login/guincheiro': 'Login do guincheiro', '/guincheiro/status': 'Análise cadastral',
   '/funcionarios/acesso': 'Acesso funcionários', '/funcionarios/painel': 'Painel de funcionários',
   '/buscar-guincho': 'Buscar guincho', '/solicitar-guincho': 'Solicitar guincho',
+  '/estimar-guincho': 'Estimativa de preço',
   '/cliente/painel': 'Painel do cliente', '/guincheiro/painel': 'Painel do guincheiro',
 }
 

@@ -9,7 +9,7 @@ import brandMark from '../assets/brand-mark.svg'
 
 const nav = [['/', 'Início'], ['/buscar-guincho', 'Encontrar guincho'], ['/sobre', 'A solução'], ['/integrantes', 'Integrantes'], ['/faq', 'FAQ'], ['/contato', 'Contato'], ['/pitch', 'Pitch']]
 const accessLinks = isApiMode
-  ? [['/solicitar-guincho', 'Solicitar guincho'], ['/cadastro/guincheiro', 'Cadastrar guincho'], ['/funcionarios/acesso', 'Funcionários']]
+  ? [['/solicitar-guincho', 'Solicitar guincho'], ['/estimar-guincho', 'Estimar preço'], ['/cadastro/guincheiro', 'Cadastrar guincho'], ['/funcionarios/acesso', 'Funcionários']]
   : [['/cadastro/cliente', 'Cadastro cliente'], ['/login/cliente', 'Entrada cliente'], ['/cadastro/guincheiro', 'Cadastro guincheiro'], ['/login/guincheiro', 'Entrada guincheiro'], ['/funcionarios/acesso', 'Funcionários']]
 
 export function Layout({ children }: { children: React.ReactNode }) {
