@@ -1,13 +1,15 @@
 # Contrato da API Java
 
-Base: `https://guincho-save-lives-backend.onrender.com`, configurável por `VITE_API_BASE_URL`. Fonte: [backend Java](https://github.com/velascoguzmanvictorhugo-ui/guincho-save-lives-backend), commit `c3d9505ae37bd37d5d2d087867576e2f59e73a8f`.
+A estimativa de preço utiliza uma segunda API, descrita no [contrato Python](contrato-api-python.md). As consultas e cadastros abaixo continuam usando o Java por padrão.
+
+Base: `https://guincho-save-lives-backend.onrender.com`, configurável por `VITE_API_BASE_URL`. Fonte: [backend Java](https://github.com/velascoguzmanvictorhugo-ui/guincho-save-lives-backend), revisado no commit `dde8c4766553e2b379285adff5b3e529d54062df` em 18/11/2026. Veja a [revisão completa, incluindo escrita real](verificacao-apis-2026-11-18.md).
 
 | Método | Rota | Corpo / resposta |
 |---|---|---|
 | GET | `/guincheiros` | Array JSON de guincheiros |
 | POST | `/guincheiros` | Cadastro; HTTP 201 com objeto enviado |
 | GET | `/solicitacoes` | Array JSON de solicitações |
-| POST | `/solicitacoes` | Cadastro; HTTP 201 com objeto enviado e endereço quando consultado |
+| POST | `/solicitacoes` | Contrato previsto: HTTP 201 com objeto enviado; atualmente retorna HTTP 500 |
 
 ## Guincheiro
 
@@ -38,7 +40,7 @@ O POST envia apenas `name`, `region`, `city`, `towType` e `price`. O ID da lista
 }
 ```
 
-O POST envia os campos acima, exceto `id`. CEP opcional: remover máscara e enviar `null` se vazio. CEP informado aciona consulta de endereço no serviço Java. Não há vínculo com um profissional, status de atendimento, descrição separada do veículo, detalhes adicionais, propostas ou mensagens nesse modelo.
+O POST do frontend envia os campos acima, exceto `id`. CEP opcional: remover máscara e enviar `null` se vazio. A fonte atual do serviço Java salva o CEP sem chamar o `CorreioImpl`. O domínio Java passou a aceitar também `clienteId` opcional, não preenchido pelo fluxo atual do frontend. Não há vínculo com um profissional, status de atendimento, descrição separada do veículo, detalhes adicionais, propostas ou mensagens nesse modelo.
 
 As anotações `@JsonProperty` usam nomes em inglês; os getters do domínio também podem expor nomes portugueses. O cliente aceita `nome`, `regiao`, `cidade`, `tipoGuincho`, `preco`, `nomeCliente`, `origem`, `destino`, `veiculo` e `problema` como aliases de leitura, enviando somente os nomes declarados nas anotações.
 
@@ -56,4 +58,4 @@ Cliente e tipos: `src/services/apiClient.ts` e `src/services/towService.ts`. Tip
 
 ## Verificação
 
-Testes automatizados usam respostas controladas do contrato acima. A verificação remota em 15/11/2026 encontrou HTTP 500 em ambos os GETs, com CORS aceitando a origem local. Consulta e persistência ponta a ponta dependem da correção desse erro no serviço publicado. Consulte [diagnóstico e pendências](integracao-pendente.md).
+Testes automatizados usam respostas controladas do contrato acima. Na revisão de 18/11/2026, guincheiros e clientes responderam HTTP 200. Um guincheiro fictício criado via Python foi recuperado no Java com ID `11`, confirmando persistência. GET e POST de solicitações retornaram HTTP 500; o POST identificou `ORA-00904: "NOME_CLIENTE": invalid identifier`. A gravação de solicitações não foi confirmada. Os preflights Java aceitaram a origem Vercel. Consulte a [revisão completa](verificacao-apis-2026-11-18.md).

@@ -1,5 +1,7 @@
 # Integração Java / Render
 
+**Atualização de publicação em 18/11/2026:** frontend e proxy Python publicados na Vercel com status READY e estimativas públicas verificadas. Veja o [registro do deploy](deploy-python-vercel-2026-11-18.md). Referências abaixo à publicação Python pendente são históricas; o diagnóstico Java/Oracle permanece separado.
+
 Frontend configurado para `https://guincho-save-lives-backend.onrender.com` por padrão. Contrato conferido no commit `c3d9505ae37bd37d5d2d087867576e2f59e73a8f` do [backend](https://github.com/velascoguzmanvictorhugo-ui/guincho-save-lives-backend).
 
 ## Implementado no frontend
@@ -15,7 +17,13 @@ Frontend configurado para `https://guincho-save-lives-backend.onrender.com` por 
 - Não há reenvio automático de POST. Falhas de conexão, HTTP 5xx e respostas inválidas bloqueiam novo envio no mesmo formulário, pois o Java pode ter persistido antes da falha.
 - Modo demo continua disponível explicitamente em `.env.local` com `VITE_APP_MODE=demo`; dados locais não são carregados nem gravados pelo Context no modo API.
 
-## Bloqueio observado no serviço publicado
+## Atualização em 18/11/2026
+
+**Revisão posterior:** guincheiro fictício criado via Python e recuperado no Java com ID `11`. A escrita de solicitação revelou `ORA-00904: "NOME_CLIENTE": invalid identifier`; o SQL do Java precisa ser alinhado ao schema Oracle. A Vercel ainda entrega HTML na rota do proxy Python e seu bundle não contém a nova integração. Veja o [relatório completo](verificacao-apis-2026-11-18.md), com testes de CORS, cálculo, escrita e limites da validação.
+
+Integração Python adicionada à calculadora `/estimar-guincho`, com proxy Vite/Vercel para resolver a ausência de CORS para a origem de produção. O fluxo HTTP local até o Python retornou HTTP 200 e a estimativa esperada. A consulta Java `/guincheiros` agora respondeu HTTP 200 com lista vazia; `/solicitacoes` continua com HTTP 500. Não houve POST de teste. Passaram 47 testes, lint e build; a verificação visual no Chrome foi interrompida pela ferramenta. Detalhes e configuração estão no [contrato Python](contrato-api-python.md). O registro abaixo preserva o diagnóstico anterior.
+
+## Bloqueio observado no serviço publicado em 15/11/2026
 
 Em **15/11/2026, aproximadamente 21h30 (America/Sao_Paulo)**, consultas diretas à Render retornaram:
 

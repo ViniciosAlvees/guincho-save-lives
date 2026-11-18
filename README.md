@@ -2,11 +2,11 @@
 
 **Tecnologia que conecta. Agilidade que faz a diferença.**
 
-Front-End da Global Solution 2026/2 da FIAP (CitizenTech), com busca, cadastro de guincheiros e solicitações integrados à API Java da equipe. O modo demonstração local continua disponível como opção. **Não é um serviço real de emergência, transporte ou pagamento.**
+Front-End da Global Solution 2026/2 da FIAP (CitizenTech), com busca, cadastro de guincheiros e solicitações integrados à API Java da equipe e estimativa de preço integrada à API Python. O modo demonstração local continua disponível como opção. **Não é um serviço real de emergência, transporte ou pagamento.**
 
 ## Tecnologias
 
-React, Vite, TypeScript, Tailwind CSS, React Router, Leaflet e OpenStreetMap. Comunicação HTTP pela Fetch API. O backend Java está em repositório separado.
+React, Vite, TypeScript, Tailwind CSS, React Router, Leaflet e OpenStreetMap. Comunicação HTTP pela Fetch API. Os backends Java e Python estão em repositórios separados.
 
 ## Executar
 
@@ -27,7 +27,19 @@ npm run build
 npm run preview
 ```
 
-Para verificar os GETs e o CORS do backend sem gravar dados: `npm run check:api`. O comando informa o status HTTP e a quantidade de registros, sem exibir nomes ou endereços. Ele não substitui o teste de escrita nem a demonstração no navegador.
+Para verificar os GETs Java, status Python e uma estimativa sem gravar dados: `npm run check:api`. O comando informa HTTP, contrato e CORS, sem exibir nomes ou endereços. Ele não substitui o teste de escrita nem a demonstração no navegador. Para verificar o proxy de um frontend iniciado/publicado, configure `FRONTEND_BASE_URL` com sua URL.
+
+## API Python: estimativa de preço
+
+**Publicação em 18/11/2026:** integração Python publicada em produção na Vercel, com proxy retornando JSON. Os seis cenários de estimativa (três veículos, diurno/noturno) e a rejeição de veículo inválido passaram pela URL pública. Consulte o [registro do deploy e das verificações](docs/deploy-python-vercel-2026-11-18.md). O [relatório anterior de APIs](docs/verificacao-apis-2026-11-18.md) preserva o diagnóstico Java/Oracle, fora do escopo desta publicação.
+
+**Migração do próprio Python para a Vercel:** a API agora está em `https://python-guincho-save.vercel.app`, com entrypoint e dependências corrigidos no repositório Python. O proxy do frontend foi atualizado para essa hospedagem. Detalhes e evidências estão no [registro da API Python na Vercel](docs/api-python-vercel-2026-11-18.md).
+
+A rota `/estimar-guincho` consulta a [API Python na Vercel](https://python-guincho-save.vercel.app) com preço inicial, distância prevista, veículo e opção noturna. Pode ser aberta pelo menu Acessos, pela busca/perfil de um profissional e pelo formulário de solicitação. O cálculo é ilustrativo e não confirma contratação. A distância é informada pelo usuário.
+
+`VITE_PYTHON_API_BASE_URL=/api/python` está nos arquivos de ambiente públicos, é o padrão do cliente e foi configurada na Vercel. O Vite e o `vercel.json` encaminham essa rota ao Python. Isso permite o acesso pela mesma origem do frontend, sem depender do CORS direto da Render Python. A tela e o rewrite já estão publicados. O Java continua responsável pelas consultas/cadastros atuais.
+
+**Verificação em 18/11/2026:** a estimativa pública da Vercel retornou HTTP 200, `application/json` e R$ 225 para base de R$ 180, 10 km, carro e sem adicional noturno. Passaram 73 testes, lint e build. Execute `npm run check:python` para conferir o HTML/bundle e as estimativas pelo proxy público; para outra instância, configure `FRONTEND_BASE_URL`. A renderização no navegador não foi confirmada porque o acesso pela ferramenta ficou bloqueado. Veja o [contrato Python](docs/contrato-api-python.md).
 
 ## CitizenTech, ODS e validação
 
