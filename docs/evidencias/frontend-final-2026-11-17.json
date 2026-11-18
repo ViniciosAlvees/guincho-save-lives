@@ -1,0 +1,443 @@
+{
+  "date": "2026-11-17T17:51:41.032Z",
+  "checks": [
+    {
+      "route": "/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "http": 200,
+      "width": 390,
+      "images": 0,
+      "protectedRedirect": false
+    },
+    {
+      "route": "/integrantes",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "http": 200,
+      "width": 390,
+      "images": 0,
+      "protectedRedirect": false
+    },
+    {
+      "route": "/sobre",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "http": 200,
+      "width": 390,
+      "images": 0,
+      "protectedRedirect": false
+    },
+    {
+      "route": "/faq",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "http": 200,
+      "width": 390,
+      "images": 0,
+      "protectedRedirect": false
+    },
+    {
+      "route": "/contato",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "http": 200,
+      "width": 390,
+      "images": 0,
+      "protectedRedirect": false
+    },
+    {
+      "route": "/pitch",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "http": 200,
+      "width": 390,
+      "images": 0,
+      "protectedRedirect": false
+    },
+    {
+      "route": "/buscar-guincho",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "http": 200,
+      "width": 390,
+      "images": 0,
+      "protectedRedirect": false
+    },
+    {
+      "route": "/guincheiros/3",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "http": 200,
+      "width": 390,
+      "images": 0,
+      "protectedRedirect": false
+    },
+    {
+      "route": "/solicitar-guincho",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "http": 200,
+      "width": 390,
+      "images": 0,
+      "protectedRedirect": false
+    },
+    {
+      "route": "/cadastro/guincheiro",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "http": 200,
+      "width": 390,
+      "images": 0,
+      "protectedRedirect": false
+    },
+    {
+      "route": "/funcionarios/acesso",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "http": 200,
+      "width": 390,
+      "images": 0,
+      "protectedRedirect": false
+    },
+    {
+      "route": "/funcionarios/painel",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "http": 200,
+      "width": 390,
+      "images": 0,
+      "protectedRedirect": true
+    },
+    {
+      "route": "/",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "http": 200,
+      "width": 768,
+      "images": 0,
+      "protectedRedirect": false
+    },
+    {
+      "route": "/integrantes",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "http": 200,
+      "width": 768,
+      "images": 0,
+      "protectedRedirect": false
+    },
+    {
+      "route": "/sobre",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "http": 200,
+      "width": 768,
+      "images": 0,
+      "protectedRedirect": false
+    },
+    {
+      "route": "/faq",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "http": 200,
+      "width": 768,
+      "images": 0,
+      "protectedRedirect": false
+    },
+    {
+      "route": "/contato",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "http": 200,
+      "width": 768,
+      "images": 0,
+      "protectedRedirect": false
+    },
+    {
+      "route": "/pitch",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "http": 200,
+      "width": 768,
+      "images": 0,
+      "protectedRedirect": false
+    },
+    {
+      "route": "/buscar-guincho",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "http": 200,
+      "width": 768,
+      "images": 0,
+      "protectedRedirect": false
+    },
+    {
+      "route": "/guincheiros/3",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "http": 200,
+      "width": 768,
+      "images": 0,
+      "protectedRedirect": false
+    },
+    {
+      "route": "/solicitar-guincho",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "http": 200,
+      "width": 768,
+      "images": 0,
+      "protectedRedirect": false
+    },
+    {
+      "route": "/cadastro/guincheiro",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "http": 200,
+      "width": 768,
+      "images": 0,
+      "protectedRedirect": false
+    },
+    {
+      "route": "/funcionarios/acesso",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "http": 200,
+      "width": 768,
+      "images": 0,
+      "protectedRedirect": false
+    },
+    {
+      "route": "/funcionarios/painel",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "http": 200,
+      "width": 768,
+      "images": 0,
+      "protectedRedirect": true
+    },
+    {
+      "route": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "http": 200,
+      "width": 1440,
+      "images": 0,
+      "protectedRedirect": false
+    },
+    {
+      "route": "/integrantes",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "http": 200,
+      "width": 1440,
+      "images": 0,
+      "protectedRedirect": false
+    },
+    {
+      "route": "/sobre",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "http": 200,
+      "width": 1440,
+      "images": 0,
+      "protectedRedirect": false
+    },
+    {
+      "route": "/faq",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "http": 200,
+      "width": 1440,
+      "images": 0,
+      "protectedRedirect": false
+    },
+    {
+      "route": "/contato",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "http": 200,
+      "width": 1440,
+      "images": 0,
+      "protectedRedirect": false
+    },
+    {
+      "route": "/pitch",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "http": 200,
+      "width": 1440,
+      "images": 0,
+      "protectedRedirect": false
+    },
+    {
+      "route": "/buscar-guincho",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "http": 200,
+      "width": 1440,
+      "images": 0,
+      "protectedRedirect": false
+    },
+    {
+      "route": "/guincheiros/3",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "http": 200,
+      "width": 1440,
+      "images": 0,
+      "protectedRedirect": false
+    },
+    {
+      "route": "/solicitar-guincho",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "http": 200,
+      "width": 1440,
+      "images": 0,
+      "protectedRedirect": false
+    },
+    {
+      "route": "/cadastro/guincheiro",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "http": 200,
+      "width": 1440,
+      "images": 0,
+      "protectedRedirect": false
+    },
+    {
+      "route": "/funcionarios/acesso",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "http": 200,
+      "width": 1440,
+      "images": 0,
+      "protectedRedirect": false
+    },
+    {
+      "route": "/funcionarios/painel",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "http": 200,
+      "width": 1440,
+      "images": 0,
+      "protectedRedirect": true
+    }
+  ],
+  "errors": [
+    {
+      "width": 390,
+      "type": "console",
+      "message": "Failed to load resource: net::ERR_NETWORK_IO_SUSPENDED"
+    },
+    {
+      "width": 390,
+      "type": "console",
+      "message": "Failed to load resource: net::ERR_NETWORK_IO_SUSPENDED"
+    }
+  ],
+  "authentication": {
+    "controlledResponses": true,
+    "unauthorizedRouteBlocked": true,
+    "login": true,
+    "protectedRead": true,
+    "reloadClearsSession": true,
+    "logoutRevokesSession": true,
+    "pinAndTokenNotStored": true,
+    "remoteActivationPending": true
+  },
+  "motion": {
+    "moves": true,
+    "pauses": true,
+    "resumes": true,
+    "pointerAndScroll": true,
+    "reducedMotionByDefault": true,
+    "explicitPlaybackWithReducedMotion": true,
+    "messageRemoved": true
+  },
+  "security": {
+    "cspEnabledInLocalPreview": true,
+    "noSourceMaps": true,
+    "originalDatabaseCredentialsAbsentFromFrontendBundle": true,
+    "noPinConfiguredInFrontend": true
+  },
+  "pitch": {
+    "emptySlots": 2,
+    "noInventedLinks": true,
+    "navigationResetsScroll": true
+  }
+}

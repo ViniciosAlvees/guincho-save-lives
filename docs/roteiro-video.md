@@ -1,6 +1,6 @@
 # Roteiro — vídeo YouTube de até três minutos
 
-**Pré-condição:** corrigir a API na Render. O vídeo obrigatório deve demonstrar aplicação e integração Java real; o modo demo não substitui esse requisito. Em 15/11/2026, GET retornava HTTP 500.
+**Pré-condição:** aquecer e conferir a API na Render, aplicar a correção de segurança e usar somente dados fictícios. Em 17/11/2026 GET e POST foram comprovados, mas houve um HTTP 500 intermitente e a proteção da listagem de pedidos ainda precisa ser publicada. O vídeo obrigatório demonstra aplicação e integração Java real; o modo demo não substitui esse requisito.
 
 1. **0:00–0:20:** apresentar equipe, cidadão beneficiado, problema de acesso à assistência veicular e proposta CitizenTech.
 2. **0:20–0:45:** mostrar Home, Integrantes, Sobre/ODS, FAQ e Contato; explicar a contribuição proposta, sem inventar impacto comprovado.
@@ -10,6 +10,8 @@
 6. **2:20–2:45:** explicar React/Vite/TypeScript/Tailwind, componentes reutilizáveis, serviços Fetch e tratamento de erros.
 7. **2:45–3:00:** mostrar links de GitHub, Vercel e API no README; mencionar as limitações atuais e encerrar.
 
-Publicar no YouTube como público ou não listado, conferir duração **máxima de três minutos** e inserir o link no README. Confirmar que o vídeo abre sem depender da conta do autor. Chat, propostas e login existem apenas no modo demo: identificá-los como simulação se forem mostrados, sem desviar da demonstração obrigatória de GET e escrita reais.
+Publicar no YouTube como público ou não listado, conferir duração **máxima de três minutos** e inserir o link no README. Confirmar que o vídeo abre sem depender da conta do autor. Chat, propostas e login de clientes/guincheiros existem apenas no modo demo: identificá-los como simulação se forem mostrados, sem desviar da demonstração obrigatória de GET e escrita reais.
+
+Inserir também o link confirmado em `src/data/pitch.ts`, no item `frontend`. O item `pitch` recebe o vídeo de apresentação da solução, cujo limite da disciplina Software Engineering é cinco minutos. Não mostrar PIN, token, credenciais, logs SQL ou dados reais na gravação. O acesso novo de funcionários só pode ser apresentado como disponível depois de validado com o backend publicado.
 
 Não confundir o vídeo com a apresentação presencial de 23 a 27/11, que exige participação oral dos integrantes e domínio do código.

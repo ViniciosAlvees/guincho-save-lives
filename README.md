@@ -10,7 +10,7 @@ React, Vite, TypeScript, Tailwind CSS, React Router, Leaflet e OpenStreetMap. Co
 
 ## Executar
 
-Requisitos: Node.js 20.19+ ou 22.12+ e npm.
+Requisitos: Node.js 22.12+, 24.x ou 26.x e npm. A suíte Vitest 5 não oferece suporte a Node 20.
 
 ```bash
 npm install
@@ -27,7 +27,7 @@ npm run build
 npm run preview
 ```
 
-Para verificar os GETs Java, status Python e uma estimativa sem gravar dados: `npm run check:api`. O comando informa HTTP, contrato e CORS, sem exibir nomes ou endereços. Ele não substitui o teste de escrita nem a demonstração no navegador. Para verificar o proxy de um frontend iniciado/publicado, configure `FRONTEND_BASE_URL` com sua URL.
+Para verificar os GETs Java, status Python e uma estimativa sem gravar dados: `npm run check:api`. O comando informa HTTP, contrato e CORS, sem exibir nomes ou endereços; espera 401/403 na listagem anônima de solicitações e falha se ela estiver pública. Ele não substitui o teste de escrita nem a demonstração no navegador. Para verificar o proxy de um frontend iniciado/publicado, configure `FRONTEND_BASE_URL` com sua URL.
 
 ## API Python: estimativa de preço
 
@@ -40,6 +40,16 @@ A rota `/estimar-guincho` consulta a [API Python na Vercel](https://python-guinc
 `VITE_PYTHON_API_BASE_URL=/api/python` está nos arquivos de ambiente públicos, é o padrão do cliente e foi configurada na Vercel. O Vite e o `vercel.json` encaminham essa rota ao Python. Isso permite o acesso pela mesma origem do frontend, sem depender do CORS direto da Render Python. A tela e o rewrite já estão publicados. O Java continua responsável pelas consultas/cadastros atuais.
 
 **Verificação em 18/11/2026:** a estimativa pública da Vercel retornou HTTP 200, `application/json` e R$ 225 para base de R$ 180, 10 km, carro e sem adicional noturno. Passaram 73 testes, lint e build. Execute `npm run check:python` para conferir o HTML/bundle e as estimativas pelo proxy público; para outra instância, configure `FRONTEND_BASE_URL`. A renderização no navegador não foi confirmada porque o acesso pela ferramenta ficou bloqueado. Veja o [contrato Python](docs/contrato-api-python.md).
+
+## Menu, Pitch e funcionários
+
+O botão **Menu** reúne páginas institucionais, busca, solicitação, cadastro de guincho, **Pitch** e **Funcionários**, em desktop, tablet e celular. A animação inicial tem pausa e retomada; respeita movimento reduzido por padrão e permite reprodução por escolha explícita.
+
+A página `/pitch` tem espaços para o pitch da solução (até cinco minutos) e a demonstração do frontend (até três minutos). Os links ainda serão enviados pela equipe. Depois de confirmados, preencher `url` em `src/data/pitch.ts` e o link exigido no README. A página não apresenta links fictícios.
+
+O acesso `/funcionarios/acesso` envia o PIN de oito dígitos para `/funcionarios/sessao`. Nenhum PIN padrão está no frontend. O painel exige sessão confirmada pelo servidor; PIN e token não ficam em URL, localStorage ou sessionStorage. **A API publicada ainda não possui essas rotas**. A implementação Java correspondente, compilada e testada localmente, está em [support/backend-security](support/backend-security/README.md) para o responsável aplicar e configurar no Render. Até lá, o acesso permanece fechado. Aprovação de documentos e alteração de status ainda não foram implementadas na API.
+
+Veja [a revisão de segurança e as ações necessárias no servidor](docs/seguranca.md). Não é possível esconder JavaScript enviado ao navegador; a proteção consiste em manter credenciais no servidor e exigir autorização também nos endpoints.
 
 ## CitizenTech, ODS e validação
 
@@ -61,11 +71,11 @@ Nenhum desses resultados foi coletado. Primeiro será estabelecida uma linha de 
 
 ## Funcionalidades do modo demonstração
 
-- Home cinematográfica com guincho ilustrado, estrada e rota animadas, parallax sutil, opção de pular e respeito a `prefers-reduced-motion`.
+- Home cinematográfica com guincho ilustrado, estrada e rota animadas, parallax sutil, pausa/retomada e respeito a `prefers-reduced-motion`.
 - Busca por região, distância aproximada em linha reta, disponibilidade, veículo, preço e avaliação; mapa interativo com marcadores fictícios. Geolocalização somente após ação do usuário.
 - Cadastro e login demonstrativos de clientes e guincheiros, com CPF validado e mascarado, senha apenas em memória durante o formulário e sessão local em memória (perdida ao recarregar). A senha do login demo não é verificada: **não há autenticação real**.
 - Cadastro profissional em quatro etapas, pré-visualização temporária de JPG/PNG/PDF (até 5 MB) e quatro documentos fictícios para concluir o fluxo. Arquivos reais não são enviados nem persistidos. Aprovação demonstrativa por funcionário, com status e bloqueios de disponibilidade/chamados.
-- Painel de funcionários com acesso demonstrativo separado, indicadores, análise documental ilustrativa, histórico e decisões confirmadas em modal. O PIN real depende do backend; nenhuma credencial fixa está no navegador.
+- O acesso público de funcionários usa exclusivamente validação pela API. Os componentes antigos de análise documental demonstrativa permanecem no código, sem rota pública que contorne a autenticação.
 - Solicitação em cinco etapas; propostas, contraproposta, aceitação/recusa, chat local, acompanhamento e histórico.
 - Painel do guincheiro com região, disponibilidade e avaliações refletidas na busca. Apenas perfis aprovados e disponíveis podem ser contratados; clientes precisam de conta demo ativa e sessão para solicitar ou negociar.
 - Avaliações de 1 a 5 estrelas vinculadas a atendimento concluído, uma por chamado; média e distribuição calculadas dos registros.
@@ -89,7 +99,8 @@ Os efeitos interativos respeitam `prefers-reduced-motion`, ponteiro por toque e 
 - `src/types`: contratos TypeScript.
 - `src/utils`: formatação e distância.
 - `docs`: contrato Java, auditoria, evidências, pendências e roteiro.
-- `scripts`: diagnóstico GET da API e geração do ZIP de entrega.
+- `scripts`: diagnóstico GET/OPTIONS da API e geração dos ZIPs de entrega e correção do backend.
+- `support/backend-security`: arquivos Java de substituição, sem credenciais, para aplicação pelo responsável do backend.
 
 ## Equipe e entrega
 
@@ -116,7 +127,7 @@ npm run build
 npm run package:delivery
 ```
 
-O pacote é gerado em `output/guincho-save-lives-entrega.zip`, com manifesto de arquivos, tamanho e SHA256 em `output/manifesto-entrega.json`. O empacotador inclui fontes, assets, documentação, scripts, lockfile, identificação e configurações necessárias. Exclui dependências instaladas, `.git`, builds, caches, arquivos temporários e `.env` locais; inclui somente `.env.example` e `.env.production`, que contêm configuração pública. O ZIP é reaberto e comparado byte a byte por SHA256 e deve ficar abaixo de 50.000.000 bytes.
+O pacote é gerado em `output/guincho-save-lives-entrega.zip`, com manifesto de arquivos, tamanho e SHA256 em `output/manifesto-entrega.json`. O empacotador inclui fontes, assets, documentação, scripts, suporte ao backend, lockfile, identificação e configurações necessárias. Exclui dependências instaladas, `.git`, `target`, builds, caches, chaves privadas e `.env` locais; inclui somente `.env.example` e `.env.production`, com apenas as três configurações públicas autorizadas. O ZIP é reaberto e comparado byte a byte por SHA256 e deve ficar abaixo de 50.000.000 bytes. O comando `npm run package:backend-security` gera separadamente `output/guincho-backend-seguranca.zip`; ele contém somente a correção e não substitui a entrega completa da disciplina Java.
 
 Extraia o pacote em uma pasta nova, execute `npm ci` e `npm run build` e confira o projeto antes de anexá-lo no Portal. Gere novamente o ZIP depois de acrescentar o vídeo, finalizar os ajustes ou integrar os commits dos colegas. Não compacte a pasta inteira manualmente. O pacote não constitui uma submissão nem comprova os requisitos que ainda dependem de API, vídeo, commits e apresentação.
 
@@ -124,11 +135,11 @@ Extraia o pacote em uma pasta nova, execute `npm ci` e `npm run build` e confira
 
 Backend: [repositório Java](https://github.com/velascoguzmanvictorhugo-ui/guincho-save-lives-backend) e [serviço na Render](https://guincho-save-lives-backend.onrender.com). No modo API, `/buscar-guincho` consulta e filtra os profissionais, `/guincheiros/:id` apresenta o perfil, `/cadastro/guincheiro` registra um profissional por POST e `/solicitar-guincho` envia nome, origem, destino, veículo, problema e CEP opcional. A API atual não tem autenticação, documentos, negociação, chat ou status de atendimento; essas áreas explicam a limitação e oferecem os fluxos disponíveis. As chamadas validam o JSON e não usam mocks como fallback. O CORS Java exige chamadas sem cookies, já configuradas no cliente.
 
-**Verificação em 15/11/2026:** a Render respondeu HTTP 500 tanto em `GET /guincheiros` quanto em `GET /solicitacoes`. O frontend está configurado e seus testes de contrato usam respostas controladas, mas a consulta e a persistência ponta a ponta ainda dependem da correção do erro interno do backend. Os POSTs atuais também não devolvem o ID gerado no Oracle; a interface não inventa um protocolo ou status. Veja o [contrato verificado](docs/contrato-api.md) e o [diagnóstico com próximos passos](docs/integracao-pendente.md).
+**Verificação em 17/11/2026:** GETs responderam HTTP 200, com CORS de consulta e POST JSON aceitando a Vercel. No navegador, um cadastro de guincheiro e uma solicitação fictícios receberam HTTP 201 e foram encontrados em consultas posteriores com IDs persistidos. Houve também um HTTP 500 intermitente durante a navegação; ele não deve ser tratado como resolvido sem examinar os logs do servidor. Os POSTs atuais continuam sem devolver o ID gerado; a interface informa essa limitação. A listagem anônima de solicitações e a credencial fixa encontrada no código Java são pendências de segurança. Veja o [contrato](docs/contrato-api.md), o [diagnóstico](docs/integracao-pendente.md) e a [revisão de segurança](docs/seguranca.md).
 
-As alterações deste repositório se limitam ao frontend e à integração HTTP. A correção do Java, do banco e da configuração da Render cabe ao integrante responsável pelo backend. Depois que o serviço estiver corrigido, executar `npm run check:api` e validar a consulta e uma escrita real pelo frontend.
+As correções Java foram preparadas em `support/backend-security`, mas não aplicadas remotamente: a conexão disponível não tem permissão de escrita nesse repositório. O responsável precisa substituir a credencial exposta, configurar as variáveis privadas e publicar a correção. Nunca colocar dados do banco ou PIN em `VITE_*`. O build bloqueia variáveis públicas não autorizadas e URLs de API com usuário/senha.
 
-O arquivo `vercel.json` configura fallback de rotas SPA para acesso direto. Em 15/11/2026, a produção da Vercel estava `READY` no commit `11984ee` da branch `main`; as páginas foram acessadas publicamente e renderizadas em Chrome nas três resoluções oficiais. O erro HTTP 500 da API ainda impede a consulta e a persistência ponta a ponta. A auditoria atual está em [revisão de requisitos e penalidades](docs/revisao-frontend.md).
+O arquivo `vercel.json` configura o fallback SPA e os cabeçalhos de segurança, incluindo CSP. Em 17/11/2026, a produção estava `READY` no commit `abca0a5` da `main`, vinculada ao repositório correto; foram verificados 30 acessos públicos nas três resoluções oficiais. As novas alterações desta revisão só passam a aparecer no site após publicação. A auditoria atual está em [revisão de requisitos e penalidades](docs/revisao-frontend.md).
 
 ## Limitações e declaração de IA
 
