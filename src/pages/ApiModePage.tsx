@@ -38,7 +38,7 @@ function ApiProfessionals({ id, initialRegion }: { id?: string; initialRegion: s
     {state === 'ready' && !visible.length && <Notice>{id ? 'Profissional não encontrado.' : 'Nenhum profissional encontrado para esta busca.'}</Notice>}
     {state === 'ready' && <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">{visible.map(p => <article key={p.id} className="surface flex flex-col p-6">
       <h2 className="break-words text-xl font-bold">{p.name}</h2><p className="mt-2 break-words text-slate-300">{p.region} • {p.city}</p><p className="mt-3 text-sm">{p.towType}</p><p className="mt-3 font-bold text-cyan">A partir de {money(p.price)}</p><p className="mt-2 text-sm text-slate-400">Disponibilidade a confirmar.</p>
-      <div className="mt-auto flex flex-wrap gap-3 pt-5">{!id && p.id && <Link className="btn-secondary" to={`/guincheiros/${encodeURIComponent(p.id)}`}>Ver perfil</Link>}<Link className="btn-primary" to="/solicitar-guincho">Criar solicitação</Link></div>
+      <div className="mt-auto flex flex-wrap gap-3 pt-5">{!id && p.id && <Link className="btn-secondary" to={`/guincheiros/${encodeURIComponent(p.id)}`}>Ver perfil</Link>}<Link className="btn-secondary" to={`/estimar-guincho?preco=${encodeURIComponent(p.price)}`}>Estimar preço</Link><Link className="btn-primary" to="/solicitar-guincho">Criar solicitação</Link></div>
     </article>)}</div>}
     <p className="text-sm text-slate-400">O pedido é registrado sem reserva de um profissional. A contratação e o acompanhamento ainda não estão disponíveis.</p>
   </div></>
@@ -67,6 +67,7 @@ function ApiRequestForm() {
   }
   return <form onSubmit={submit} className="surface mx-auto max-w-3xl space-y-5 p-6 sm:p-9" aria-busy={busy}>
     <h2 className="text-2xl font-bold">Dados do atendimento</h2><p className="text-sm text-slate-300">Use dados fictícios para testar este projeto acadêmico. O envio registra um pedido; não aciona atendimento de emergência.</p>
+    <Link className="btn-secondary" to="/estimar-guincho" target="_blank" rel="noopener noreferrer">Estimar preço em nova aba</Link>
     <fieldset disabled={busy || !!created || uncertain} className="space-y-5">
       <label className="field">Nome do cliente<input className="input" required minLength={2} maxLength={80} autoComplete="name" value={data.clientName} onChange={e => update('clientName', e.target.value)}/></label>
       <label className="field">Local de origem<input className="input" required minLength={5} maxLength={160} value={data.origin} onChange={e => update('origin', e.target.value)}/></label>

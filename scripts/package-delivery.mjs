@@ -8,7 +8,7 @@ import { zipSync, unzipSync } from 'fflate'
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)))
 const required = ['package.json', 'package-lock.json', 'index.html', 'vite.config.ts', 'tsconfig.json', 'tsconfig.app.json', 'tsconfig.node.json', 'eslint.config.js', 'vercel.json', '.env.example', '.env.production', '.gitignore', 'README.md', 'identificacao.txt']
-const forbidden = /(^|\/)(node_modules|\.git|dist|coverage|output|\.aws|\.codex|\.agents)(\/|$)|\.(log|tmp|tsbuildinfo)$/i
+const forbidden = /(^|\/)(node_modules|\.git|dist|target|coverage|output|\.aws|\.codex|\.agents)(\/|$)|\.(log|tmp|tsbuildinfo|pem|key|p12|pfx)$/i
 const files = Object.create(null)
 const checksum = data => createHash('sha256').update(data).digest('hex')
 
@@ -17,7 +17,12 @@ async function addFile(path) {
   if (name.startsWith('../') || forbidden.test(name) || (name.split('/').some(part => part.startsWith('.env')) && !['.env.example', '.env.production'].includes(name))) {
     throw new Error(`Arquivo não permitido no pacote: ${name}`)
   }
-  files[name] = new Uint8Array(await readFile(path))
+  const bytes = await readFile(path)
+  if (['.env.example', '.env.production'].includes(name)) {
+    const keys = bytes.toString('utf8').split(/\r?\n/).map(line => line.trim()).filter(line => line && !line.startsWith('#')).map(line => line.split('=')[0].trim())
+    if (keys.some(key => !['VITE_APP_MODE', 'VITE_API_BASE_URL', 'VITE_PYTHON_API_BASE_URL'].includes(key))) throw new Error(`Configuração pública não autorizada em ${name}.`)
+  }
+  files[name] = new Uint8Array(bytes)
 }
 
 async function addDirectory(path) {
@@ -33,7 +38,7 @@ async function addDirectory(path) {
 try {
   // Lista explícita: nunca compactar a pasta inteira nem depender do .gitignore.
   for (const name of required) await addFile(join(root, name))
-  for (const directory of ['src', 'docs', 'scripts']) await addDirectory(join(root, directory))
+  for (const directory of ['src', 'docs', 'scripts', 'support']) await addDirectory(join(root, directory))
   for (const name of ['src/main.tsx', 'src/App.tsx', 'src/index.css']) {
     if (!files[name]) throw new Error(`Arquivo essencial ausente: ${name}`)
   }
