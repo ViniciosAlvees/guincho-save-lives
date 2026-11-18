@@ -57,4 +57,10 @@ describe('acesso de funcionários validado pelo servidor', () => {
     await expect(employeeService.logout(token)).resolves.toBeUndefined()
     expect(fetch).toHaveBeenCalledWith('/api/python/funcionarios/sessao', expect.objectContaining({ method: 'DELETE', headers: { Authorization: `Bearer ${token}` } }))
   })
+
+  it.each([502, 504])('explica a indisponibilidade do Java sem invalidar a sessão: HTTP %s', async status => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response('INTERNAL_SENTINEL', { status })))
+    const { employeeService } = await import('./employeeService')
+    await expect(employeeService.getRequests(token)).rejects.toMatchObject({ status, message: expect.stringContaining('Seu acesso foi confirmado') })
+  })
 })

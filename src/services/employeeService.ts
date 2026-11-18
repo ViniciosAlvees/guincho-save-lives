@@ -26,7 +26,14 @@ export const employeeService = {
     return { token: session.token, expiresAt: session.expiresAt }
   },
   async getRequests(token: string) {
-    return parseApiRequests(await employeeRequest('/funcionarios/solicitacoes', undefined, { token }))
+    try {
+      return parseApiRequests(await employeeRequest('/funcionarios/solicitacoes', undefined, { token }))
+    } catch (error) {
+      if (error instanceof ApiError && (error.status === 502 || error.status === 504)) {
+        throw new ApiError('Seu acesso foi confirmado, mas o servidor de pedidos está indisponível. Tente consultar novamente em instantes.', false, error.status)
+      }
+      throw error
+    }
   },
   async logout(token: string): Promise<void> {
     await employeeRequest('/funcionarios/sessao', undefined, { method: 'DELETE', token, uncertainWrite: false, emptyResponse: true })
