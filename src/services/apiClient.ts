@@ -18,6 +18,10 @@ export async function pythonRequest(path: string, signal?: AbortSignal): Promise
   return requestJson(pythonApiBaseUrl, 'VITE_PYTHON_API_BASE_URL', path, undefined, { signal })
 }
 
+export async function employeeRequest(path: string, body?: unknown, options: ApiRequestOptions = {}): Promise<unknown> {
+  return requestJson(pythonApiBaseUrl, 'VITE_PYTHON_API_BASE_URL', path, body, options)
+}
+
 async function requestJson(baseUrl: string, variable: string, path: string, body?: unknown, options: ApiRequestOptions = {}): Promise<unknown> {
   if (!baseUrl) throw new ApiError(`Configure ${variable} com o endereço da API.`)
   const method = options.method ?? (body !== undefined ? 'POST' : 'GET')

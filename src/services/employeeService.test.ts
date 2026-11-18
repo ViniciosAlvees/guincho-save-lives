@@ -5,7 +5,7 @@ const token = 't'.repeat(43)
 const session = () => ({ token, expiresAt: new Date(Date.now() + 1800000).toISOString() })
 
 describe('acesso de funcionários validado pelo servidor', () => {
-  beforeEach(() => { vi.resetModules(); vi.stubEnv('VITE_API_BASE_URL', 'https://api.example.test') })
+  beforeEach(() => { vi.resetModules(); vi.stubEnv('VITE_API_BASE_URL', 'https://java.example.test'); vi.stubEnv('VITE_PYTHON_API_BASE_URL', '/api/python') })
   afterEach(() => { vi.unstubAllGlobals(); vi.unstubAllEnvs() })
 
   it('envia o PIN somente no corpo JSON e exige uma sessão válida da API', async () => {
@@ -14,7 +14,7 @@ describe('acesso de funcionários validado pelo servidor', () => {
     vi.stubGlobal('fetch', fetch)
     const { employeeService } = await import('./employeeService')
     expect(await employeeService.login(testPin)).toEqual(value)
-    expect(fetch).toHaveBeenCalledWith('https://api.example.test/funcionarios/sessao', expect.objectContaining({ method: 'POST', credentials: 'omit', body: JSON.stringify({ pin: testPin }) }))
+    expect(fetch).toHaveBeenCalledWith('/api/python/funcionarios/sessao', expect.objectContaining({ method: 'POST', credentials: 'omit', body: JSON.stringify({ pin: testPin }) }))
     expect(JSON.stringify(fetch.mock.calls[0][1].headers)).not.toContain(testPin)
   })
 
@@ -25,7 +25,7 @@ describe('acesso de funcionários validado pelo servidor', () => {
     expect(fetch).not.toHaveBeenCalled()
   })
 
-  it.each([401, 404, 405, 429, 500])('não libera acesso nem expõe o corpo de erro: HTTP %s', async status => {
+  it.each([401, 404, 405, 429, 500, 503])('não libera acesso nem expõe o corpo de erro: HTTP %s', async status => {
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response('SQL_INTERNAL_TEST_SENTINEL', { status })))
     const { employeeService } = await import('./employeeService')
     try { await employeeService.login(testPin); expect.fail('Acesso deveria ser recusado') }
@@ -46,7 +46,7 @@ describe('acesso de funcionários validado pelo servidor', () => {
     vi.stubGlobal('fetch', fetch)
     const { employeeService } = await import('./employeeService')
     expect(await employeeService.getRequests(token)).toEqual([])
-    expect(fetch).toHaveBeenCalledWith('https://api.example.test/funcionarios/solicitacoes', expect.objectContaining({ method: 'GET', headers: { Authorization: `Bearer ${token}` } }))
+    expect(fetch).toHaveBeenCalledWith('/api/python/funcionarios/solicitacoes', expect.objectContaining({ method: 'GET', headers: { Authorization: `Bearer ${token}` } }))
     expect(fetch.mock.calls[0][0]).not.toContain(token)
   })
 
@@ -55,6 +55,6 @@ describe('acesso de funcionários validado pelo servidor', () => {
     vi.stubGlobal('fetch', fetch)
     const { employeeService } = await import('./employeeService')
     await expect(employeeService.logout(token)).resolves.toBeUndefined()
-    expect(fetch).toHaveBeenCalledWith('https://api.example.test/funcionarios/sessao', expect.objectContaining({ method: 'DELETE', headers: { Authorization: `Bearer ${token}` } }))
+    expect(fetch).toHaveBeenCalledWith('/api/python/funcionarios/sessao', expect.objectContaining({ method: 'DELETE', headers: { Authorization: `Bearer ${token}` } }))
   })
 })
